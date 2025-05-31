@@ -1,0 +1,33 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "Slack chat project of Svetlov Alexander",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/dist",
+    "postinstall": "cd frontend && npm ci"
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muhomor-mushroom/frontend-project-12.git"
+  },
+  "keywords": [
+    "'Chat'",
+    "'Slack'",
+    "'React'",
+    "'Redux'",
+    "'WebSocket'."
+  ],
+  "author": "Svetlov Alexander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Muhomor-mushroom/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/Muhomor-mushroom/frontend-project-12#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
