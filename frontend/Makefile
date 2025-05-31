@@ -3,6 +3,6 @@ run:
 build:
 	npm run build
 start:
-	npm start
+	npm run dev
 serve:
 	npm serve
