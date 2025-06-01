@@ -1,6 +1,6 @@
 start-server:
-	npx start-server
-run-dev:
-	npm run dev
+	npx start-server -s ./frontend/dist
+build:
+	npm run build
 install:
 	npm install

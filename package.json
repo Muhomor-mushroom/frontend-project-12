@@ -8,7 +8,6 @@
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/dist",
     "postinstall": "cd frontend && npm ci"
-    
   },
   "repository": {
     "type": "git",
