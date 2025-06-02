@@ -10,6 +10,11 @@
     "start": "start-server -s ./frontend/dist",
     "postinstall": "cd frontend && npm ci"
   },
+    "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Muhomor-mushroom/frontend-project-12.git"
