@@ -4,7 +4,79 @@
   padding: 2rem;
   text-align: center;
 }
+#login-form {
+  background-color: bisque;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.registration-link {
+  cursor: pointer;
+  transition: all 1s ease;;
+  margin-left: 30px;
+  margin-top: 17px;
+  background-color: rgb(0, 0, 0);
+  border-radius: 7%;
+}
+.registration-link:hover {
+  color: black;
+  font-size: x-large;
+  background-color: bisque;
+}
+.login-submit {
+  border-radius: 7%;
+  transition: all 1s ease;
+  margin-top: 25px;
+  cursor: pointer
+}
+.error-container {
+  font-size: xx-large;
+  text-align: center;
+  color: black;
+}
+.login-submit:hover {
+  background-color: aqua;
+  color: black;
+  font-size: x-large;
+}
+.input-login {
+  padding: 10px 15px; /* удобные отступы */
+  border: 1px solid #ccc; /* тонкая серая рамка */
+  border-radius: 4px; /* легкое скругление углов */
+  background: white; /* белый фон для контраста */
+  color: #333; /* темно-серый текст для лучшей читаемости */
+  font-family: sans-serif; /* чистый шрифт */
+  font-size: 16px; /* оптимальный размер */
+  outline: none; /* убираем стандартное выделение */
+  width: 100%; /* растягиваем на всю ширину родителя */
+  max-width: 200px; /* но не шире 300px */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* легкая тень для объема */
+}
 
+.input-login:focus {
+  border-color: #666; /* темнее при фокусе */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1); /* мягкое свечение */
+}
+.label-login {
+  font-family: sans-serif; /* чистый шрифт */
+  font-size: 14px; /* оптимальный размер */
+  color: #555; /* мягкий серый для контраста с bisque */
+  margin-left: 8px; /* отступ от input */
+  cursor: pointer; /* курсор-указатель при наведении */
+  user-select: none; /* запрет выделения текста */
+  transition: color 0.2s; /* плавное изменение цвета */
+}
+.form-row {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+}
+.label-login:hover {
+  color: #333; /* темнее при наведении */
+}
 .logo {
   height: 6em;
   padding: 1.5em;
