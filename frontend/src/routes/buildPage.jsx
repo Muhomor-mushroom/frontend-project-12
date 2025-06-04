@@ -4,26 +4,27 @@ import { selectors } from "../slices/usersSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const BuildPage = (index) => {
-  const users = useSelector(selectors.selectAll);
   const dispatch = useDispatch();
-  
+
   const onSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     console.log(data);
-  }
+  };
 
   if (index == "/login")
+    console.log('wpah')
     return (
       <>
         <Formik
-          initialValues={{ email: "", password: "" }}
-          onSubmit={({ setSubmitting }) => {
+          initialValues={{ name: "", password: "" }}
+          onSubmit={(values, { setSubmitting }) => {
             console.log("Form is validated! Submitting the form...");
+            console.log(values);
             setSubmitting(false);
           }}
         >
-          {() => (
+          {({ isSubmitting }) => (
             <Form>
               <div className="form-group">
                 <label htmlFor="name">Name</label>
@@ -37,7 +38,7 @@ const BuildPage = (index) => {
                   className="form-control"
                 />
               </div>
-              <button type="submit">Submit</button>
+              <button type="submit" disabled={isSubmitting}>Submit</button>
             </Form>
           )}
         </Formik>

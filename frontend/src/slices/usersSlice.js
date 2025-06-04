@@ -7,7 +7,7 @@ const usersAdapter = createEntityAdapter();
 
 const initialState = usersAdapter.getInitialState();
 
-const slice = createSlice({
+const usersReducer = createSlice({
   name: 'users',
   initialState,
   reducers: {
@@ -22,7 +22,6 @@ const slice = createSlice({
     updateUser: usersAdapter.updateOne,
   },
 })
-
 export const selectors = usersAdapter.getSelectors(state => state.users);
-export const { actions } = slice;
-export default slice.reducer;
+export const { actions } = usersReducer;
+export default usersReducer.reducer;
