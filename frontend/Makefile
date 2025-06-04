@@ -3,6 +3,6 @@ run:
 build:
 	npm run build
 start:
-	npm run dev
+	npx start-server -s ./frontend/dist
 serve:
 	npm serve
