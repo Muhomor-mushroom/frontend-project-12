@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Provider, useDispatch } from "react-redux";
 import {
   actions as channelsActions,
@@ -9,70 +9,81 @@ import {
   actions as messagesActions,
   selectors as messagesSelectors,
 } from "../../slices/messagesSlice.js";
+import { selectors as usersSelectors } from "../../slices/usersSlice.js";
 import channelsReducer from "../../slices/channelsSlice.js";
 import messagesReducer from "../../slices/messagesSlice.js";
+import usersReducer from "../../slices/usersSlice.js";
 import { configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-import Col from "react-bootstrap/Col";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import _ from "lodash";
 
-const renderMessages = (messages, id) => {
-    console.log(id)
-    return (
-    <div className="messages-constructor">
-        <div className="messages-header">
-            <h3 className="messages-title">{}</h3>
-        </div>
-        <div className="messages-body"></div>
-        <div className="messages-bottom"></div>
-    </div>
-  )
-/*     if (messages.length > 0) {
-    return (
-        {messages.map((message) => {
-          return (
-            <div key={id} className="message-constructor">
-              <p className="message">{message}</p>
-            </div>
-          );
-        })}
-    );
-  } else {
-    console.log('not have a messanges')
-    return null;
-  } */
+const messageSubmit = async (data) => {
+    const resp = await axios()
+}
+
+const renderMessages = (messages, activeChannelId) => {
+  const allChannels = useSelector((state) => state.channels.entities);
+  const activeChannel = _.get(allChannels, activeChannelId);
+  const [text, setText] = useState("");
+  const handleInputChange = (event) => {
+    setText(event.target.value);
+  };
+  return (
+    <>
+      <div className="messages-header">
+        <h3 className="messages-title">Channel какой-то там</h3>
+      </div>
+      <div className="messages-body"></div>
+      <div className="messages-bottom">
+        <form action="" onSubmit={(e) => {
+            e.preventDefault();
+            const resultText = text;
+            const newMessage = { body: resultText, channelId: activeChannelId, userName: 'pop'};
+            setText('');
+
+        }}>
+            <input
+          type="text"
+          value={text}
+          onChange={handleInputChange}
+          className="messages-input"
+        />
+        <button type="submit" className="messages-bottom-submit">Send</button>
+        </form>
+      </div>
+    </>
+  );
 };
 
-const renderChannels = (channels, messages) => {
-    const [activeChannelId, setActiveChannelId] = useState(1)
-  return (
-    <div className="channels-constructor">
+const renderChannels = (channels, setActiveChannelId) => {
+  const handleSubmit = (tabIndex) => {
+    setActiveChannelId(tabIndex)
+  }
+    return (
+    <>
       <div className="channels-header">
         <h3 className="channels-title">Channels</h3>
         <button className="channels-add-button">+</button>
       </div>
       <div className="channels-body">
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-          <Row>
-            <Col sm={3}>
-              <Nav variant="pills" className="flex-column">
-                {channels.map((channel) => {
-                  const { id, name } = channel;
-                  return (
-                      <Nav.Item onClick={() => setActiveChannelId(id)} key={id} className="channel" id={id}>
-                        <Nav.Link eventKey="first"># {name}</Nav.Link>
-                        {renderMessages(messages, id)}
-                      </Nav.Item>
-                  );
-                })}
-              </Nav>
-            </Col>
-          </Row>
-        </Tab.Container>
+        <Tabs
+          onSelect={handleSubmit}
+          defaultActiveKey="profile"
+          id="justify-tab-example"
+          className="mb-3"
+          justify
+        >
+          {channels.map((channel) => {
+            const { id, name } = channel;
+            return (
+              <Tab key={id} eventKey={id} title={`# ${name}`} id={id}></Tab>
+            );
+          })}
+        </Tabs>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -81,10 +92,12 @@ const store = configureStore({
   reducer: {
     channels: channelsReducer,
     messages: messagesReducer,
+    users: usersReducer,
   },
 });
 
 const MainPage = () => {
+  const [activeChannelId, setActiveChannelId] = useState(1);
   const token = localStorage.getItem("token");
 
   if (token == null) {
@@ -118,16 +131,24 @@ const MainPage = () => {
 
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  console.log(messages);
+  const users = useSelector(usersSelectors.selectAll);
 
-  return <>{renderChannels(channels, messages)}</>;
+  console.log(users)
+  return (
+    <div className="chat-container">
+      <div className="channels-container">
+        {renderChannels(channels, setActiveChannelId)}
+      </div>
+      <div className="messages-container">
+        {renderMessages(messages, activeChannelId)}
+      </div>
+    </div>
+  );
 };
 
 // Главный экспортируемый компонент, который оборачивает MainPage в Provider
 export default () => (
   <Provider store={store}>
-    <div className="chat-constructor">
-      <MainPage />
-    </div>
+    <MainPage />
   </Provider>
 );

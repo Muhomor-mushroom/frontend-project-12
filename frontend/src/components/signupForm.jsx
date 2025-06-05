@@ -1,6 +1,10 @@
 import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import { useState } from "react";
+import { actions as usersActions } from "../slices/usersSlice.js";
+import { Provider, useDispatch } from "react-redux";
+import usersReducer from "../slices/usersSlice.js";
+import { configureStore } from "@reduxjs/toolkit";
 
 const renderError = (errorState) => {
   if (errorState !== null) {
@@ -12,9 +16,16 @@ const renderError = (errorState) => {
   }
 };
 
-export default () => {
+const store = configureStore({
+  reducer: {
+    users: usersReducer
+  },
+});
+
+const MainPage = () => {
   const [error, setError] = useState(null);
 
+  const dispatch = useDispatch()
   const passwordCheck = (data) => {
     const { password, confirmPassword } = data;
     if (password !== confirmPassword) {
@@ -24,16 +35,22 @@ export default () => {
   };
 
   const handleSignup = async (data) => {
+    const { name, password } = data;
     try {
       passwordCheck(data);
       const resp = await axios.post("/api/v1/signup", {
-        username: data.name,
-        password: data.password,
+        username: name,
+        password: password,
       });
       console.log(resp);
       const { token } = resp.data;
       localStorage.setItem("token", token);
       if (resp.statusText == "Created") {
+        dispatch(usersActions.addUser({
+            username: name,
+            password,
+            isActive: true,
+        }))
         window.location = "/";
         console.log(resp.data);
       }
@@ -82,3 +99,11 @@ export default () => {
     </>
   );
 };
+
+export default () => {
+    return (
+        <Provider store={store}>
+            <MainPage />
+        </Provider>
+    )
+}

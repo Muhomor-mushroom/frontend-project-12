@@ -121,46 +121,6 @@
 .label-login:hover {
   color: #333; /* темнее при наведении */
 }
-.chat-constructor {
-  background-color: bisque;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-}
-.channels-constructor {
-  width: 18vw;
-  height: 100vh;
-  border: 1px solid black;
-}
-.channels-header {
-  display: flex;
-  border-bottom: 1px solid black;
-  padding-bottom: 15px;
-}
-.channels-title {
-  margin-left: 10px;
-}
-.channels-add-button {
-  margin-top: 13px;
-  margin-left: 15px;
-  background-color: burlywood;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* легкая тень для объема */
-  border: 1px solid #070707; /* тонкая серая рамка */
-  border-radius: 4px; /* легкое скругление углов */
-}
-.channels-body {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-}
-.channel-constructor {
-  border-bottom: 1px solid black;
-}
-.messages-constructor {
-  width: 70%;
-  border: 1px solid black;
-}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -174,6 +134,31 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.chat-container {
+  display: flex; /* Включаем flex-распределение */
+  width: 100vw; /* Занимает всю ширину родителя */
+  height: 100vh; /* На всю высоту экрана (можно изменить) */
+}
+.channels-container {
+  flex: 0 0 30%; /* Не растягивается, не сжимается, базовая ширина 30% */
+  background: #f0f0f0; /* Фон для наглядности */
+  border-right: 1px solid #ccc; /* Разделитель */
+  overflow-y: auto; /* Если контактов много — появится скролл */
+}
+.messages-container {
+  flex: 0 0 70%; /* Не растягивается, не сжимается, базовая ширина 70% */
+  background: #fff; /* Фон чата */
+  overflow-y: auto; /* Скролл, если сообщений много */
+}
+.messages-bottom {
+  display: flex;
+  justify-content: center;
+}
+.messages-bottom-submit {
+  background-color: black;
+  color: white;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -182,7 +167,6 @@
     transform: rotate(360deg);
   }
 }
-
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
