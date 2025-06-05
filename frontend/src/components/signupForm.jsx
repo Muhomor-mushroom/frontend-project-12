@@ -5,7 +5,6 @@ import { Provider, useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "../slices/userSlice.js";
 import { setUser } from "../slices/userSlice.js";
-import { useSelector } from "react-redux";
 
 const renderError = (errorState) => {
   if (errorState !== null) {
@@ -23,10 +22,10 @@ const store = configureStore({
   },
 });
 
-const MainPage = () => {
+const SignupForm = () => {
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
   const passwordCheck = (data) => {
     const { password, confirmPassword } = data;
     if (password !== confirmPassword) {
@@ -46,21 +45,19 @@ const MainPage = () => {
       console.log(resp);
       const { token } = resp.data;
       localStorage.setItem("token", token);
-      localStorage.setItem('userName', name)
-      if (resp.statusText == "Created") {
+      localStorage.setItem('userName', name);
+      if (resp.statusText === "Created") {
         dispatch(setUser({ userName: name }));
-        console.log(useSelector((state) => state.user.userName))
-        /* window.location = "/"; */
-        console.log(resp.data);
+        window.location = "/";
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
-    <>
     <div className="signup-form">
-        <Formik
+      <Formik
         initialValues={{ name: "", password: "", confirmPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
           console.log("Form is validated! Submitting the form...");
@@ -95,14 +92,15 @@ const MainPage = () => {
         )}
       </Formik>
     </div>
-    </>
   );
 };
 
-export default () => {
-    return (
-        <Provider store={store}>
-            <MainPage />
-        </Provider>
-    )
-}
+const App = () => {
+  return (
+    <Provider store={store}>
+      <SignupForm />
+    </Provider>
+  );
+};
+
+export default App;

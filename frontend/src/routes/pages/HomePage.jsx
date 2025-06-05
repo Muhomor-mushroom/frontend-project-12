@@ -1,6 +1,6 @@
 import axios from "axios";
-import { use, useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import {
   actions as channelsActions,
   selectors as channelsSelectors,
@@ -9,82 +9,88 @@ import {
   actions as messagesActions,
   selectors as messagesSelectors,
 } from "../../slices/messagesSlice.js";
-import { selectors as usersSelectors } from "../../slices/usersSlice.js";
-import channelsReducer from "../../slices/channelsSlice.js";
-import messagesReducer from "../../slices/messagesSlice.js";
-import usersReducer from "../../slices/usersSlice.js";
-import userReducer from "../../slices/userSlice.js";
 import { configureStore } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import _ from "lodash";
+import channelsReducer from "../../slices/channelsSlice.js";
+import messagesReducer from "../../slices/messagesSlice.js";
+import userReducer from "../../slices/userSlice.js";
 
 const messageSubmit = async (data) => {
-  const newMessage = data;  
-  const resp = await axios.post('/api/v1/messages', newMessage, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      }
-    })
-    return resp.data
-}
+  const resp = await axios.post('/api/v1/messages', data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    }
+  });
+  return resp.data;
+};
 
-const renderMessages = (messages, activeChannelId, activeUser) => {
-  const allChannels = useSelector((state) => state.channels.entities);
+const Messages = ({ messages, activeChannelId }) => {
   const [text, setText] = useState("");
+  const activeUser = useSelector((state) => state.user.userName);
+
   const handleInputChange = (event) => {
     setText(event.target.value);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(activeUser == null) {
+      console.error('that is not a real user');
+      return;
+    }
+    const userName = activeUser;
+    const newMessage = { 
+      body: text, 
+      channelId: activeChannelId, 
+      userName 
+    };
+    
+    try {
+      const result = await messageSubmit(newMessage);
+      console.log(result);
+      setText('');
+    } catch (error) {
+      console.error('Error submitting message:', error);
+    }
+  };
+
   return (
     <>
       <div className="messages-header">
-        <h3 className="messages-title">Channel какой-то там</h3>
+        <h3 className="messages-title">Channel {activeChannelId}</h3>
       </div>
       <div className="messages-body">
-        {messages.map((message) => {
-          if(message.channelId == activeChannelId) {
-            return (
-              <div key={message.id} className="message-container">
-                <p className="message-text">{message.userName}: {message.body}</p>
-              </div>
-            )
-          }
-        })}
+        {messages
+          .filter(message => message.channelId === activeChannelId)
+          .map(message => (
+            <div key={message.id} className="message-container">
+              <p className="message-text">{message.userName}: {message.body}</p>
+            </div>
+          ))
+        }
       </div>
       <div className="messages-bottom">
-        <form action="" onSubmit={(e) => {
-            e.preventDefault();
-            const resultText = text;
-            const activeuser = useSelector((state) => state.user.userName);
-            consolelog(activeuser)
-            const userName = localStorage.getItem('userName')
-            const newMessage = { body: resultText, channelId: activeChannelId, userName};
-            messageSubmit(newMessage)
-            .then((result) => {
-              console.log(result)
-            })
-            setText('');
-
-        }}>
-            <input
-          type="text"
-          value={text}
-          onChange={handleInputChange}
-          className="messages-input"
-        />
-        <button type="submit" className="messages-bottom-submit">Send</button>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={text}
+            onChange={handleInputChange}
+            className="messages-input"
+          />
+          <button type="submit" className="messages-bottom-submit">Send</button>
         </form>
       </div>
     </>
   );
 };
 
-const renderChannels = (channels, setActiveChannelId) => {
-  const handleSubmit = (tabIndex) => {
-    setActiveChannelId(tabIndex)
-  }
-    return (
+const Channels = ({ channels, setActiveChannelId }) => {
+  const handleSelect = (tabIndex) => {
+    setActiveChannelId(tabIndex);
+  };
+
+  return (
     <>
       <div className="channels-header">
         <h3 className="channels-title">Channels</h3>
@@ -92,86 +98,87 @@ const renderChannels = (channels, setActiveChannelId) => {
       </div>
       <div className="channels-body">
         <Tabs
-          onSelect={handleSubmit}
-          defaultActiveKey="profile"
-          id="justify-tab-example"
+          onSelect={handleSelect}
+          defaultActiveKey="1"
+          id="channels-tabs"
           className="mb-3"
           justify
         >
-          {channels.map((channel) => {
-            const { id, name } = channel;
-            return (
-              <Tab key={id} eventKey={id} title={`# ${name}`} id={id}></Tab>
-            );
-          })}
+          {channels.map((channel) => (
+            <Tab 
+              key={channel.id} 
+              eventKey={channel.id} 
+              title={`# ${channel.name}`}
+            />
+          ))}
         </Tabs>
       </div>
     </>
   );
 };
 
-// Создаем store вне компонента
 const store = configureStore({
   reducer: {
     channels: channelsReducer,
     messages: messagesReducer,
-    users: usersReducer,
     user: userReducer
   },
 });
 
-const MainPage = () => {
+const ChatPage = () => {
   const [activeChannelId, setActiveChannelId] = useState(1);
   const token = localStorage.getItem("token");
-
-  if (token == null) {
-    window.location = "/login";
-    return null;
-  }
-
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const axiosChannels = async () => {
-      const { data } = await axios.get("/api/v1/channels", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      dispatch(channelsActions.addChannels(data));
-    };
-    const axiosMessages = async () => {
-      const { data } = await axios.get("/api/v1/messages", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      dispatch(messagesActions.addMessages(data));
-    };
-
-    axiosChannels();
-    axiosMessages();
-  }, [dispatch, token]);
-
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  const activeUser = useSelector((state) => state.user.userName);
-  console.log(activeUser)
+
+  useEffect(() => {
+    if (!token) {
+      window.location = "/login";
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const channelsResponse = await axios.get("/api/v1/channels", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        dispatch(channelsActions.addChannels(channelsResponse.data));
+
+        const messagesResponse = await axios.get("/api/v1/messages", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        dispatch(messagesActions.addMessages(messagesResponse.data));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, token]);
+
+  if (!token) return null;
+
   return (
     <div className="chat-container">
       <div className="channels-container">
-        {renderChannels(channels, setActiveChannelId)}
+        <Channels 
+          channels={channels} 
+          setActiveChannelId={setActiveChannelId} 
+        />
       </div>
       <div className="messages-container">
-        {renderMessages(messages, activeChannelId)}
+        <Messages 
+          messages={messages} 
+          activeChannelId={activeChannelId} 
+        />
       </div>
     </div>
   );
 };
 
-// Главный экспортируемый компонент, который оборачивает MainPage в Provider
 export default () => (
   <Provider store={store}>
-    <MainPage />
+    <ChatPage />
   </Provider>
 );
