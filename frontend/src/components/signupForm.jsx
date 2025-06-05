@@ -48,8 +48,9 @@ const MainPage = () => {
       localStorage.setItem("token", token);
       localStorage.setItem('userName', name)
       if (resp.statusText == "Created") {
-        dispatch(setUser({userName: name}));
-        window.location = "/";
+        dispatch(setUser({ userName: name }));
+        console.log(useSelector((state) => state.user.userName))
+        /* window.location = "/"; */
         console.log(resp.data);
       }
     } catch (error) {

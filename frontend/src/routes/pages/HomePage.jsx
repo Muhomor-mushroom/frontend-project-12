@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import _ from "lodash";
-import { server } from 'socket.io';
 
 const messageSubmit = async (data) => {
   const newMessage = data;  
@@ -31,9 +30,8 @@ const messageSubmit = async (data) => {
     return resp.data
 }
 
-const renderMessages = (messages, activeChannelId) => {
+const renderMessages = (messages, activeChannelId, activeUser) => {
   const allChannels = useSelector((state) => state.channels.entities);
-  const activeChannel = _.get(allChannels, activeChannelId);
   const [text, setText] = useState("");
   const handleInputChange = (event) => {
     setText(event.target.value);
@@ -47,7 +45,7 @@ const renderMessages = (messages, activeChannelId) => {
         {messages.map((message) => {
           if(message.channelId == activeChannelId) {
             return (
-              <div className="message-container">
+              <div key={message.id} className="message-container">
                 <p className="message-text">{message.userName}: {message.body}</p>
               </div>
             )
@@ -58,6 +56,8 @@ const renderMessages = (messages, activeChannelId) => {
         <form action="" onSubmit={(e) => {
             e.preventDefault();
             const resultText = text;
+            const activeuser = useSelector((state) => state.user.userName);
+            consolelog(activeuser)
             const userName = localStorage.getItem('userName')
             const newMessage = { body: resultText, channelId: activeChannelId, userName};
             messageSubmit(newMessage)
@@ -155,7 +155,8 @@ const MainPage = () => {
 
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  console.log(messages)
+  const activeUser = useSelector((state) => state.user.userName);
+  console.log(activeUser)
   return (
     <div className="chat-container">
       <div className="channels-container">
