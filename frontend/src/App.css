@@ -142,13 +142,33 @@
 .channels-container {
   flex: 0 0 30%; /* Не растягивается, не сжимается, базовая ширина 30% */
   background: #f0f0f0; /* Фон для наглядности */
-  border-right: 1px solid #ccc; /* Разделитель */
+  border-right: 1px solid #0a0a0a; /* Разделитель */
+  border-left: 1px solid #ccc; /* Разделитель */
+  border-top: 1px solid #ccc; /* Разделитель */
+  border-bottom: 1px solid #ccc; /* Разделитель */
   overflow-y: auto; /* Если контактов много — появится скролл */
+}
+.channels-header {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  border-bottom: 1px solid black;
+  padding-bottom: 13px;
+}
+.channels-title {
+  margin-right: 60px;
+}
+.channels-add-button {
+  margin-left: 10px;
 }
 .messages-container {
   flex: 0 0 70%; /* Не растягивается, не сжимается, базовая ширина 70% */
   background: #fff; /* Фон чата */
   overflow-y: auto; /* Скролл, если сообщений много */
+  border-bottom: 1px solid #ccc; /* Разделитель */
+  border-top: 1px solid #ccc; /* Разделитель */
+  border-right: 1px solid #e3dddd; /* Разделитель */
+  background-color: rgb(226, 239, 239);
 }
 .messages-bottom {
   display: flex;
@@ -157,6 +177,7 @@
 .messages-bottom-submit {
   background-color: black;
   color: white;
+  margin-left: 15px;
 }
 
 @keyframes logo-spin {

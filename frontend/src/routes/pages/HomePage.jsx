@@ -13,14 +13,22 @@ import { selectors as usersSelectors } from "../../slices/usersSlice.js";
 import channelsReducer from "../../slices/channelsSlice.js";
 import messagesReducer from "../../slices/messagesSlice.js";
 import usersReducer from "../../slices/usersSlice.js";
+import userReducer from "../../slices/userSlice.js";
 import { configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import _ from "lodash";
+import { server } from 'socket.io';
 
 const messageSubmit = async (data) => {
-    const resp = await axios()
+  const newMessage = data;  
+  const resp = await axios.post('/api/v1/messages', newMessage, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+    return resp.data
 }
 
 const renderMessages = (messages, activeChannelId) => {
@@ -35,12 +43,27 @@ const renderMessages = (messages, activeChannelId) => {
       <div className="messages-header">
         <h3 className="messages-title">Channel какой-то там</h3>
       </div>
-      <div className="messages-body"></div>
+      <div className="messages-body">
+        {messages.map((message) => {
+          if(message.channelId == activeChannelId) {
+            return (
+              <div className="message-container">
+                <p className="message-text">{message.userName}: {message.body}</p>
+              </div>
+            )
+          }
+        })}
+      </div>
       <div className="messages-bottom">
         <form action="" onSubmit={(e) => {
             e.preventDefault();
             const resultText = text;
-            const newMessage = { body: resultText, channelId: activeChannelId, userName: 'pop'};
+            const userName = localStorage.getItem('userName')
+            const newMessage = { body: resultText, channelId: activeChannelId, userName};
+            messageSubmit(newMessage)
+            .then((result) => {
+              console.log(result)
+            })
             setText('');
 
         }}>
@@ -93,6 +116,7 @@ const store = configureStore({
     channels: channelsReducer,
     messages: messagesReducer,
     users: usersReducer,
+    user: userReducer
   },
 });
 
@@ -131,9 +155,7 @@ const MainPage = () => {
 
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  const users = useSelector(usersSelectors.selectAll);
-
-  console.log(users)
+  console.log(messages)
   return (
     <div className="chat-container">
       <div className="channels-container">

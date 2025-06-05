@@ -1,10 +1,11 @@
 import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import { useState } from "react";
-import { actions as usersActions } from "../slices/usersSlice.js";
 import { Provider, useDispatch } from "react-redux";
-import usersReducer from "../slices/usersSlice.js";
 import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "../slices/userSlice.js";
+import { setUser } from "../slices/userSlice.js";
+import { useSelector } from "react-redux";
 
 const renderError = (errorState) => {
   if (errorState !== null) {
@@ -18,7 +19,7 @@ const renderError = (errorState) => {
 
 const store = configureStore({
   reducer: {
-    users: usersReducer
+    user: userReducer
   },
 });
 
@@ -45,12 +46,9 @@ const MainPage = () => {
       console.log(resp);
       const { token } = resp.data;
       localStorage.setItem("token", token);
+      localStorage.setItem('userName', name)
       if (resp.statusText == "Created") {
-        dispatch(usersActions.addUser({
-            username: name,
-            password,
-            isActive: true,
-        }))
+        dispatch(setUser({userName: name}));
         window.location = "/";
         console.log(resp.data);
       }

@@ -26,9 +26,6 @@ export default () => {
       window.location = "/";
     } catch (error) {
       setError(error.message);
-      /* if (error.status == 401) {
-      handleSignup(data);
-    } */
     }
   };
   return (
