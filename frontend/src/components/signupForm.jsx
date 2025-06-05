@@ -43,7 +43,8 @@ export default () => {
   };
   return (
     <>
-      <Formik
+    <div className="signup-form">
+        <Formik
         initialValues={{ name: "", password: "", confirmPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
           console.log("Form is validated! Submitting the form...");
@@ -54,29 +55,30 @@ export default () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <Field type="name" name="name" className="form-control" />
+            <div className="form-group signup-group">
+              <label className="signup-label" htmlFor="name">Name</label>
+              <Field type="name" name="name" className="form-control signup-field" />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Field type="password" name="password" className="form-control" />
+            <div className="form-group signup-group">
+              <label className="signup-label" htmlFor="password">Password</label>
+              <Field type="password" name="password" className="form-control signup-field" />
             </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm the password</label>
+            <div className="form-group signup-group">
+              <label className="signup-label" htmlFor="confirmPassword">Confirm the password</label>
               <Field
                 type="password"
                 name="confirmPassword"
-                className="form-control"
+                className="form-control signup-field"
               />
             </div>
-            <button type="submit" disabled={isSubmitting}>
+            <button className="signup-button" type="submit" disabled={isSubmitting}>
               Submit
             </button>
             {renderError(error)}
           </Form>
         )}
       </Formik>
+    </div>
     </>
   );
 };
