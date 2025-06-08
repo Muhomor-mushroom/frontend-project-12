@@ -5,7 +5,7 @@ import { Provider, useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "../slices/userSlice.js";
 import { setUser } from "../slices/userSlice.js";
-
+import { useSelector } from "react-redux";
 const renderError = (errorState) => {
   if (errorState !== null) {
     return (
@@ -42,12 +42,11 @@ const SignupForm = () => {
         username: name,
         password: password,
       });
-      console.log(resp);
       const { token } = resp.data;
       localStorage.setItem("token", token);
       localStorage.setItem('userName', name);
       if (resp.statusText === "Created") {
-        dispatch(setUser({ userName: name }));
+        dispatch(setUser({ userName: name}));
         window.location = "/";
       }
     } catch (error) {
@@ -61,7 +60,6 @@ const SignupForm = () => {
         initialValues={{ name: "", password: "", confirmPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
           console.log("Form is validated! Submitting the form...");
-          console.log(values);
           handleSignup(values);
           setSubmitting(false);
         }}

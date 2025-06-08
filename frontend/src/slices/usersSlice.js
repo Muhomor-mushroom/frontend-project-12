@@ -12,8 +12,8 @@ const usersSlice = createSlice({
     reducers: {
         addUser: usersAdapter.addOne,
         addUsers: usersAdapter.addMany,
-        removeUser: (state, {payload}) => {
-            usersAdapter.removeOne(state, payload);
+        removeUser: (state, payload) => {
+            usersAdapter.removeOne(state, payload.id);
         }
     }
 })

@@ -15,14 +15,19 @@ import Tabs from "react-bootstrap/Tabs";
 import channelsReducer from "../../slices/channelsSlice.js";
 import messagesReducer from "../../slices/messagesSlice.js";
 import userReducer from "../../slices/userSlice.js";
+import { setUser } from "../../slices/userSlice.js";
+import socket from "../../socket-io-chat-server/socket.js";
 
-const messageSubmit = async (data) => {
-  const resp = await axios.post('/api/v1/messages', data, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    }
+const messageSubmit = (data) => {
+  socket.on("newMessage", async (payload) => {
+    console.log(payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+    const resp = await axios.post("/api/v1/messages", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return resp.data;
   });
-  return resp.data;
 };
 
 const Messages = ({ messages, activeChannelId }) => {
@@ -35,23 +40,23 @@ const Messages = ({ messages, activeChannelId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(activeUser == null) {
-      console.error('that is not a real user');
+    if (activeUser == null) {
+      console.error("that is not a real user");
       return;
     }
-    const userName = activeUser;
-    const newMessage = { 
-      body: text, 
-      channelId: activeChannelId, 
-      userName 
+    const name = activeUser.userName;
+    const newMessage = {
+      body: text,
+      channelId: activeChannelId,
+      userName: name,
     };
-    
+
     try {
       const result = await messageSubmit(newMessage);
       console.log(result);
-      setText('');
+      setText("");
     } catch (error) {
-      console.error('Error submitting message:', error);
+      console.error("Error submitting message:", error);
     }
   };
 
@@ -62,13 +67,14 @@ const Messages = ({ messages, activeChannelId }) => {
       </div>
       <div className="messages-body">
         {messages
-          .filter(message => message.channelId === activeChannelId)
-          .map(message => (
+          .filter((message) => message.channelId === activeChannelId)
+          .map((message) => (
             <div key={message.id} className="message-container">
-              <p className="message-text">{message.userName}: {message.body}</p>
+              <p className="message-text">
+                {message.userName}: {message.body}
+              </p>
             </div>
-          ))
-        }
+          ))}
       </div>
       <div className="messages-bottom">
         <form onSubmit={handleSubmit}>
@@ -78,7 +84,9 @@ const Messages = ({ messages, activeChannelId }) => {
             onChange={handleInputChange}
             className="messages-input"
           />
-          <button type="submit" className="messages-bottom-submit">Send</button>
+          <button type="submit" className="messages-bottom-submit">
+            Send
+          </button>
         </form>
       </div>
     </>
@@ -105,9 +113,9 @@ const Channels = ({ channels, setActiveChannelId }) => {
           justify
         >
           {channels.map((channel) => (
-            <Tab 
-              key={channel.id} 
-              eventKey={channel.id} 
+            <Tab
+              key={channel.id}
+              eventKey={channel.id}
               title={`# ${channel.name}`}
             />
           ))}
@@ -121,7 +129,7 @@ const store = configureStore({
   reducer: {
     channels: channelsReducer,
     messages: messagesReducer,
-    user: userReducer
+    user: userReducer,
   },
 });
 
@@ -129,8 +137,6 @@ const ChatPage = () => {
   const [activeChannelId, setActiveChannelId] = useState(1);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
-  const channels = useSelector(channelsSelectors.selectAll);
-  const messages = useSelector(messagesSelectors.selectAll);
 
   useEffect(() => {
     if (!token) {
@@ -141,14 +147,15 @@ const ChatPage = () => {
     const fetchData = async () => {
       try {
         const channelsResponse = await axios.get("/api/v1/channels", {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(channelsActions.addChannels(channelsResponse.data));
 
         const messagesResponse = await axios.get("/api/v1/messages", {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(messagesActions.addMessages(messagesResponse.data));
+        dispatch(setUser({ userName: localStorage.getItem("userName") }));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -159,19 +166,16 @@ const ChatPage = () => {
 
   if (!token) return null;
 
+  const channels = useSelector(channelsSelectors.selectAll);
+  const messages = useSelector(messagesSelectors.selectAll);
+
   return (
     <div className="chat-container">
       <div className="channels-container">
-        <Channels 
-          channels={channels} 
-          setActiveChannelId={setActiveChannelId} 
-        />
+        <Channels channels={channels} setActiveChannelId={setActiveChannelId} />
       </div>
       <div className="messages-container">
-        <Messages 
-          messages={messages} 
-          activeChannelId={activeChannelId} 
-        />
+        <Messages messages={messages} activeChannelId={activeChannelId} />
       </div>
     </div>
   );
