@@ -2,6 +2,8 @@ import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import { useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
+import { useTranslation } from 'react-i18next';
+import i18n from "../i18n";
 
 const renderError = (errorState) => {
   if (errorState !== null) {
@@ -15,6 +17,7 @@ const renderError = (errorState) => {
 
 export default () => {
   const [error, setError] = useState(null);
+  const { t, i18n } = useTranslation();
 
   const handleLogin = async (data) => {
     try {
@@ -22,7 +25,10 @@ export default () => {
         username: data.name,
         password: data.password,
       });
-      const { token } = resp.data;
+      const { token, username } = resp.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userName', username);
+      console.log(resp.data)
       window.location = "/";
     } catch (error) {
       setError(error.message);
@@ -43,13 +49,13 @@ export default () => {
           <Form className="form-row">
             <div className="form-group">
               <InputGroup.Text className='label-login' id="inputGroup-sizing-lg">
-                  name
+                  {i18n.t('loginForm.name')}
                 </InputGroup.Text>
               <Field type="name" name="name" className="form-control input-login" />
             </div>
             <div className="form-group">
                 <InputGroup.Text className='label-login' id="inputGroup-sizing-lg">
-                  Password
+                  {i18n.t('loginForm.password')}
                 </InputGroup.Text>
                 <Field
                   type="password"
@@ -58,15 +64,16 @@ export default () => {
                 />
             </div>
             <button className="login-submit" type="submit" disabled={isSubmitting}>
-              Submit
+              {i18n.t('loginForm.submit')}
             </button>
             <div className='registration-link' onClick={() => (window.location = "/signup")}>
-              <h3>Регистрация</h3>
+              <h3>{i18n.t('loginForm.registration')}</h3>
             </div>
           </Form>
         )}
       </Formik>
       {renderError(error)}
+      <a className="link-on-chat" onClick={() => window.location = "/"}>{i18n.t('loginForm.hexletChat')}</a>
     </div>
   );
 };

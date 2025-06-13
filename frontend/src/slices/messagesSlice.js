@@ -14,7 +14,8 @@ const messagesSlice = createSlice({
         addMessages: messagesAdapter.addMany,
         removeMessage: (state, {payload}) => {
             messagesAdapter.removeOne(state, payload);
-        }
+        },
+        removeMessages: messagesAdapter.removeMany,
     }
 })
 

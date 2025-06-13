@@ -43,6 +43,7 @@
 .signup-label {
   font-size: large;
   margin-right: 13px;
+  color: #060606;
 }
 .signup-field {
   padding: 10px 15px; /* удобные отступы */
@@ -162,6 +163,40 @@
 .channels-add-button {
   margin-left: 10px;
 }
+.channel-name-error {
+  color: red;
+}
+.signup-login-error {
+  color: red;
+}
+.link-on-chat {
+  cursor: pointer;
+  margin-top: 15px;
+  background: black;
+  padding: 9px 6px;
+  border-radius: 10%;
+  color: white;
+  transition: all 1s ease;
+}
+.link-on-chat:hover {
+  color: black;
+  background-color: bisque;
+  font-size: xx-large;
+}
+.signup-link-on-chat {
+  cursor: pointer;
+  margin-top: 15px;
+  background: black;
+  padding: 9px 6px;
+  border-radius: 10%;
+  color: white;
+  transition: all 1s ease;
+}
+.signup-link-on-chat:hover {
+  color: black;
+  background-color: bisque;
+  font-size: x-large;
+}
 .messages-container {
   flex: 0 0 70%; /* Не растягивается, не сжимается, базовая ширина 70% */
   background: #fff; /* Фон чата */
@@ -170,6 +205,13 @@
   border-top: 1px solid #ccc; /* Разделитель */
   border-right: 1px solid #e3dddd; /* Разделитель */
   background-color: rgb(226, 239, 239);
+}
+.log-out{
+  cursor: pointer;
+}
+.messages-body {
+  display: flex;
+  flex-direction: column;
 }
 .messages-bottom {
   display: flex;

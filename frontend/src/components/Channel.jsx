@@ -1,0 +1,160 @@
+import { use, useState } from "react";
+import axios from "axios";
+import i18n from "../i18n";
+import * as yup from "yup";
+
+const errorReturn = (error) => {
+  console.log(error);
+  if (error == "The channel already exists") {
+    return i18n.t("chatForm.channelExistError");
+  }
+  if (error == "name is a required field") {
+    return i18n.t("chatForm.requiredFieldError");
+  }
+  if (error == "name must be at least 3 characters") {
+    return i18n.t("chatForm.nameMinError");
+  }
+  if (error == "name must be at most 20 characters") {
+    return i18n.t("chatForm.nameMaxError");
+  }
+};
+
+let schema = yup.object().shape({
+  name: yup.string().required().min(3).max(20),
+});
+
+export default ({ channel, handleClick, channels, setActiveChannel }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState("");
+  const [isDeliting, setIsDeliting] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isChannelNameError, setIsChannelNameError] = useState(false);
+  const [channelNameError, setChannelNameError] = useState(null);
+
+  const checkChannelName = (value, propChannel) => {
+    channels.forEach((channel) => {
+      if (channel.name == value && channel.id !== propChannel.id) {
+        setIsChannelNameError(true);
+        setChannelNameError('The channel already exists');
+        throw new Error('The channel already exists');
+      } else {
+        setIsChannelNameError(false);
+        setText(value);
+      }
+    });
+  };
+  const updateChannel = (channel) => {
+    const editedChannel = { name: text };
+    try {
+      checkChannelName(text, channel);
+      schema.validate({ name: text }).then((result) => {
+        setIsFetching(true);
+        axios
+          .patch(`/api/v1/channels/${channel.id}`, editedChannel, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            setText("");
+            console.log(response.data); // => { id: '3', name: 'new name channel', removable: true }
+            setIsFetching(false);
+          })
+      })
+      .catch((e) => {
+            console.log(e.errors);
+            setIsChannelNameError(true);
+            setChannelNameError(e.errors[0]);
+          })
+    } catch (e) {
+      console.error(e.message);
+      setIsFetching(false);
+    }
+  };
+  const deleteChannel = (channel) => {
+    setIsDeliting(true);
+    setIsFetching(true);
+    axios
+      .delete(`/api/v1/channels/${channel.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(channels);
+        console.log(channels[0]);
+        setActiveChannel(channels[0]);
+        setIsFetching(false);
+      })
+      .catch((e) => {
+        setIsFetching(false);
+      });
+  };
+  const delitingForm = (channel) => {
+    if (channel.name !== "random" && channel.name !== "general") {
+      if (isDeliting) {
+        return (
+          <>
+            <p>{i18n.t("chatForm.deleteQuestion")}</p>
+            <button
+              onClick={() => deleteChannel(channel)}
+              disabled={isFetching}
+            >
+              {i18n.t("chatForm.yes")}
+            </button>
+            <button onClick={() => setIsDeliting(false)} disabled={isFetching}>
+              {i18n.t("chatForm.no")}
+            </button>
+          </>
+        );
+      } else {
+        return (
+          <button onClick={() => setIsDeliting(true)} disabled={isFetching}>
+            {i18n.t("chatForm.delete")}
+          </button>
+        );
+      }
+    }
+  };
+  const makeEdit = () => {
+    setText(channel.name);
+    setIsEditing(!isEditing);
+  };
+  const createButtons = (channel) => {
+    if (channel.name !== "random" && channel.name !== "general") {
+      return (
+        <>
+          {!isEditing ? (
+            <button onClick={() => makeEdit()} disabled={isFetching}>
+              {i18n.t("chatForm.rename")}
+            </button>
+          ) : (
+            <button type='submit'
+              onClick={() => updateChannel(channel)}
+              disabled={isFetching}
+            >
+              {i18n.t("chatForm.submit")}
+            </button>
+          )}
+          {delitingForm(channel)}
+        </>
+      );
+    }
+  };
+    const formSubmit = (e, channel) => {
+    e.preventDefault();
+    updateChannel(channel);
+  }
+  return (
+    <>
+      <p onClick={() => handleClick(channel.id)}># {channel.name}</p>
+      {isEditing && (
+        <form onSubmit={(e) => formSubmit(e, channel)}>
+          <input type='text' onChange={(e) => setText(e.target.value)} value={text}></input>
+          {isChannelNameError && <p>{errorReturn(channelNameError)}</p>}
+        </form>
+      )}
+      {createButtons(channel)}
+    </>
+  );
+};

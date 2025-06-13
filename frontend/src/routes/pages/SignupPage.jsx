@@ -1,6 +1,6 @@
 import SignupForm from "../../components/signupForm.jsx"
 
-export default () => {
+export default ({i18n}) => {
     return (
         <>
         <SignupForm />

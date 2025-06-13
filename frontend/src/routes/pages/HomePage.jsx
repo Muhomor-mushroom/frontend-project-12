@@ -1,6 +1,6 @@
 import ChatForm from "../../components/chatForm.jsx"
 
-export default () => {
+export default ({i18n}) => {
  return (
     <ChatForm />
  )

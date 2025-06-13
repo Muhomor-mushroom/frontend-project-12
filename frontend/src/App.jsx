@@ -4,7 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import MainForm from "./form.jsx";
 
-function App() {
+function App () {
   return (
     <>
       <MainForm />
