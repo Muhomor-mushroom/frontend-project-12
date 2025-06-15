@@ -2,6 +2,8 @@ import { use, useState } from "react";
 import axios from "axios";
 import i18n from "../i18n";
 import * as yup from "yup";
+import { deletedChannelToast } from "./chatForm.jsx";
+import { errorToast as createErrorToast, renaimedChannelToast} from "./chatForm.jsx";
 
 const errorReturn = (error) => {
   console.log(error);
@@ -56,9 +58,13 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
             },
           })
           .then((response) => {
+            setActiveChannel(response.data);
             setText("");
-            console.log(response.data); // => { id: '3', name: 'new name channel', removable: true }
             setIsFetching(false);
+            renaimedChannelToast();
+          })
+          .catch((error) => {
+            createErrorToast(error.message);
           })
       })
       .catch((e) => {
@@ -81,10 +87,9 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         },
       })
       .then((response) => {
-        console.log(channels);
-        console.log(channels[0]);
         setActiveChannel(channels[0]);
         setIsFetching(false);
+        deletedChannelToast();
       })
       .catch((e) => {
         setIsFetching(false);
@@ -147,7 +152,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
   }
   return (
     <>
-      <p onClick={() => handleClick(channel.id)}># {channel.name}</p>
+      <p className='channel-logo' onClick={() => handleClick(channel.id)}># {channel.name}</p>
       {isEditing && (
         <form onSubmit={(e) => formSubmit(e, channel)}>
           <input type='text' onChange={(e) => setText(e.target.value)} value={text}></input>

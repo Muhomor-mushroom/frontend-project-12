@@ -4,6 +4,7 @@ import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import * as yup from "yup";
 import i18n from "../i18n.js";
+import { errorToast as createErrorToast, createdChannelToast } from "./chatForm.jsx";
 
 const errorReturn = (error) => {
   if (error == 'The channel already exists') {
@@ -35,7 +36,11 @@ const handleAdd = ({ name }, setActiveChannel) => {
     })
     .then((response) => {
       setActiveChannel(response.data);
-    });
+      createdChannelToast();
+    })
+    .catch((error) => {
+      createErrorToast(error.message);
+    })
 };
 
 const Channels = ({ channels, setActiveChannel }) => {
@@ -59,6 +64,7 @@ const Channels = ({ channels, setActiveChannel }) => {
   const CreateBody = () => {
     if (isAdding) {
       return (
+        <>
         <Formik
           initialValues={{ name: "" }}
           onSubmit={(values, { setSubmitting }) => {
@@ -66,9 +72,10 @@ const Channels = ({ channels, setActiveChannel }) => {
               .validate({ name: values.name })
               .then((result) => {
                 checkOnPlagiat(result);
-                handleAdd(values, setActiveChannel)
+                handleAdd(values, setActiveChannel);
                 setIsAdding(false);
                 setSubmitting(false);
+                createToast();
               })
               .catch(function (err) {
                 if (typeof err.message == "string") {
@@ -103,7 +110,7 @@ const Channels = ({ channels, setActiveChannel }) => {
               </button>
             </Form>
           )}
-        </Formik>
+        </Formik></>
       );
     } else {
       return (

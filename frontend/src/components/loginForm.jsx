@@ -2,8 +2,8 @@ import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import { useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useTranslation } from 'react-i18next';
 import i18n from "../i18n";
+import { ToastContainer, toast } from 'react-toastify';
 
 const renderError = (errorState) => {
   if (errorState !== null) {
@@ -17,7 +17,7 @@ const renderError = (errorState) => {
 
 export default () => {
   const [error, setError] = useState(null);
-  const { t, i18n } = useTranslation();
+  const toastify = () => toast(error);
 
   const handleLogin = async (data) => {
     try {
@@ -25,13 +25,15 @@ export default () => {
         username: data.name,
         password: data.password,
       });
+      setError(null);
       const { token, username } = resp.data;
       localStorage.setItem('token', token);
       localStorage.setItem('userName', username);
-      console.log(resp.data)
+      console.log(resp.data);
       window.location = "/";
     } catch (error) {
       setError(error.message);
+      toastify();
     }
   };
   return (
@@ -39,7 +41,6 @@ export default () => {
       <Formik
         initialValues={{ name: "", password: "" }}
         onSubmit={(values, { setSubmitting }) => {
-          console.log("Form is validated! Submitting the form...");
           console.log(values);
           handleLogin(values);
           setSubmitting(false);
@@ -47,6 +48,7 @@ export default () => {
       >
         {({ isSubmitting }) => (
           <Form className="form-row">
+            <ToastContainer />
             <div className="form-group">
               <InputGroup.Text className='label-login' id="inputGroup-sizing-lg">
                   {i18n.t('loginForm.name')}
@@ -72,7 +74,6 @@ export default () => {
           </Form>
         )}
       </Formik>
-      {renderError(error)}
       <a className="link-on-chat" onClick={() => window.location = "/"}>{i18n.t('loginForm.hexletChat')}</a>
     </div>
   );

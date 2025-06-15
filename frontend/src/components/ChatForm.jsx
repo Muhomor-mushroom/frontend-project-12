@@ -13,21 +13,30 @@ import { setUser } from "../slices/userSlice.js";
 import Channels from "./channels.jsx";
 import Messages from "./messages.jsx";
 import i18n from "../i18n.js";
+import { ToastContainer, toast } from 'react-toastify';
+
+const createdChannelToast = () => toast(i18n.t('chatForm.createdChannelToast'));
+
+const deletedChannelToast = () => toast(i18n.t('chatForm.deletedChannelToast'));
+
+const renaimedChannelToast = () => toast(i18n.t('chatForm.renaimedChannelToast'))
+
+const errorToast = (message) => toast(`${i18n.t('chatForm.networkErrorToast')}${message}`);
 
 const ChatPage = () => {
   const token = localStorage.getItem("token");
+  const [activeChannel, setActiveChannel] = useState({});
   const dispatch = useDispatch();
       if (!token) {
-      window.location = "/login";
       return;
     }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const channelsResponse = await axios.get("/api/v1/channels", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        setActiveChannel(channelsResponse.data[0]);
         const messagesResponse = await axios.get("/api/v1/messages", {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -35,7 +44,9 @@ const ChatPage = () => {
         dispatch(channelsActions.addChannels(channelsResponse.data));
         dispatch(setUser({ userName: localStorage.getItem("userName") }));
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data: ", error);
+        errorToast(error);
+        window.location = "/login";
       }
     };
 
@@ -52,19 +63,19 @@ const ChatPage = () => {
 
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-  const [activeChannel, setActiveChannel] = useState({});
-
   return (
     <div className="chat-container">
+      <ToastContainer />
       <div className="channels-container">
         <Channels channels={channels} setActiveChannel={setActiveChannel} />
         <a className="log-out" onClick={() => logOut()}>{i18n.t('chatForm.logOut')}</a>
       </div>
       <div className="messages-container">
-        {<Messages messages={messages} activeChannel={activeChannel} />}
+        <Messages messages={messages} activeChannel={activeChannel} />
       </div>
     </div>
   );
 };
 
 export default () => <ChatPage />;
+export {createdChannelToast, deletedChannelToast, renaimedChannelToast, errorToast};

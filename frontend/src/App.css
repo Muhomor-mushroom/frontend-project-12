@@ -114,6 +114,15 @@
   user-select: none; /* запрет выделения текста */
   transition: color 0.2s; /* плавное изменение цвета */
 }
+.channel-logo {
+  color: black;
+  cursor: pointer;
+  transition: 0.6s;
+}
+.channel-logo:hover {
+  font-size: 20px;
+  color: red;
+}
 .form-row {
   display: flex;
   margin-bottom: 15px;

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import i18n from "../i18n";
+import filter from "leo-profanity";
+
 const messageSubmit = async (data) => {
   const resp = await axios.post("/api/v1/messages", data, {
     headers: {
@@ -11,6 +13,15 @@ const messageSubmit = async (data) => {
   return resp.data;
 };
 
+const createMessage = (message) => {
+  return (
+    <div key={message.id} className="message-container">
+      <p className="message-text">
+        {message.userName}: {message.body}
+      </p>
+    </div>
+  );
+};
 const Messages = ({ messages, activeChannel }) => {
   if (activeChannel == null) {
     return null;
@@ -21,7 +32,6 @@ const Messages = ({ messages, activeChannel }) => {
   const handleInputChange = (event) => {
     setText(event.target.value);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (activeUser == null) {
@@ -46,19 +56,14 @@ const Messages = ({ messages, activeChannel }) => {
   return (
     <>
       <div className="messages-header">
-        <h3 className="messages-title">{i18n.t('chatForm.channel')} # {activeChannel.name}</h3>
+        <h3 className="messages-title">
+          {i18n.t("chatForm.channel")} # {activeChannel.name}
+        </h3>
       </div>
       <div className="messages-body">
-        {messages.map(
-          (message) =>
-            message.channelId == activeChannel.id && (
-              <div key={message.id} className="message-container">
-                <p className="message-text">
-                  {message.userName}: {message.body}
-                </p>
-              </div>
-            )
-        )}
+        {messages.map((message) => {
+          message.channelId == activeChannel.id && createMessage(message)
+        })}
       </div>
       <div className="messages-bottom">
         <form onSubmit={handleSubmit}>
@@ -69,7 +74,7 @@ const Messages = ({ messages, activeChannel }) => {
             className="messages-input"
           />
           <button type="submit" className="messages-bottom-submit">
-            {i18n.t('chatForm.send')}
+            {i18n.t("chatForm.send")}
           </button>
         </form>
       </div>

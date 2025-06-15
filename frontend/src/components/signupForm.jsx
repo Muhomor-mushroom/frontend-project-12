@@ -8,6 +8,7 @@ import { setUser } from "../slices/userSlice.js";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import i18n from "../i18n.js";
+import { ToastContainer, toast } from 'react-toastify';
 
 let schema = yup.object().shape({
   name: yup.string().required().min(3).max(20),
@@ -25,12 +26,15 @@ const store = configureStore({
 
 const SignupForm = () => {
   const [isError, setIsError] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
   const [isUsernameError, setIsUserNameError] = useState(false);
   const [usernameError, setUsernameError] = useState(null);
   const [passwordIsError, setPasswordIsError] = useState(false);
   const [passwordError, setPasswordError] = useState(null);
   const [isConfirmError, setIsConfirmError] = useState(false);
   const [confirmError, setConfirmError] = useState(null);
+
+  const toastify = () => toast(fetchError);
 
   const cleanValidateErrors = () => {
     setIsUserNameError(false);
@@ -125,14 +129,15 @@ const SignupForm = () => {
         });
       }
       else {
-      console.log(error);
-      setIsError(true);
+      setFetchError(error.message);
+      toastify();
     }
     }
   };
 
   return (
     <div className="signup-form">
+      <ToastContainer />
       <Formik
         initialValues={{ name: "", password: "", confirmPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
@@ -181,11 +186,6 @@ const SignupForm = () => {
                 <p className="signup-login-error">{confirmError}</p>
               )}
             </div>
-            {isError && (
-              <h3 className="signup-login-error">
-                {i18n.t('signupForm.existError')}
-              </h3>
-            )}
             <button
               className="signup-button"
               type="submit"

@@ -36,6 +36,10 @@ export default {
             requiredFieldError: 'Это обязатаельное поле',
             nameMinError: 'Имя должно содержать не менее 3 символов',
             nameMaxError: 'Имя должно содержать не более 20 символов',
+            deletedChannelToast: 'Канал успешно удален',
+            createdChannelToast: 'Канал успешно добавлен',
+            renaimedChannelToast: 'Канал успешно переименован',
+            networkErrorToast: 'Ошибка сети:'
         }
     }
 }
