@@ -231,6 +231,9 @@
   color: white;
   margin-left: 15px;
 }
+.author-message {
+  color: rgb(178, 93, 93);
+}
 
 @keyframes logo-spin {
   from {

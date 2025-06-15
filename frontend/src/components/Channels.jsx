@@ -5,6 +5,7 @@ import axios from "axios";
 import * as yup from "yup";
 import i18n from "../i18n.js";
 import { errorToast as createErrorToast, createdChannelToast } from "./chatForm.jsx";
+import filter from "leo-profanity";
 
 const errorReturn = (error) => {
   if (error == 'The channel already exists') {
@@ -18,6 +19,9 @@ const errorReturn = (error) => {
   }
   if (error == 'name must be at most 20 characters') {
     return (i18n.t('chatForm.nameMaxError'));
+  }
+  if (error == 'Obscene word') {
+    return (i18n.t('chatForm.ObsceneError'));
   }
 }
 
@@ -57,6 +61,11 @@ const Channels = ({ channels, setActiveChannel }) => {
       }
     });
   };
+  const censoreCheck = ({ name }) => {
+    if (filter.check(name)) {
+      throw new Error("Obscene word");
+    }
+  }
   const handleSelect = (channel) => {
     setActiveChannel(channel);
   };
@@ -71,6 +80,7 @@ const Channels = ({ channels, setActiveChannel }) => {
             schema
               .validate({ name: values.name })
               .then((result) => {
+                censoreCheck(result);
                 checkOnPlagiat(result);
                 handleAdd(values, setActiveChannel);
                 setIsAdding(false);
@@ -78,11 +88,10 @@ const Channels = ({ channels, setActiveChannel }) => {
                 createToast();
               })
               .catch(function (err) {
+                setIsError(true);
                 if (typeof err.message == "string") {
-                  setIsError(true);
                   setTextError(err.message);
                 } else {
-                  setIsError(true);
                   setTextError(err.errors[0]);
                 }
               });

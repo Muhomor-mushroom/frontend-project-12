@@ -3,10 +3,13 @@ import axios from "axios";
 import i18n from "../i18n";
 import * as yup from "yup";
 import { deletedChannelToast } from "./chatForm.jsx";
-import { errorToast as createErrorToast, renaimedChannelToast} from "./chatForm.jsx";
+import {
+  errorToast as createErrorToast,
+  renaimedChannelToast,
+} from "./chatForm.jsx";
+import filter from "leo-profanity";
 
 const errorReturn = (error) => {
-  console.log(error);
   if (error == "The channel already exists") {
     return i18n.t("chatForm.channelExistError");
   }
@@ -18,6 +21,9 @@ const errorReturn = (error) => {
   }
   if (error == "name must be at most 20 characters") {
     return i18n.t("chatForm.nameMaxError");
+  }
+  if (error == "Obscene word") {
+    return i18n.t("chatForm.ObsceneError");
   }
 };
 
@@ -37,42 +43,54 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     channels.forEach((channel) => {
       if (channel.name == value && channel.id !== propChannel.id) {
         setIsChannelNameError(true);
-        setChannelNameError('The channel already exists');
-        throw new Error('The channel already exists');
+        setChannelNameError("The channel already exists");
+        throw new Error("The channel already exists");
       } else {
         setIsChannelNameError(false);
         setText(value);
       }
     });
   };
+  const checkCensore = (text) => {
+    if (filter.check(text)) {
+      throw new Error("Obscene word");
+    }
+  };
   const updateChannel = (channel) => {
     const editedChannel = { name: text };
     try {
       checkChannelName(text, channel);
-      schema.validate({ name: text }).then((result) => {
-        setIsFetching(true);
-        axios
-          .patch(`/api/v1/channels/${channel.id}`, editedChannel, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            setActiveChannel(response.data);
-            setText("");
-            setIsFetching(false);
-            renaimedChannelToast();
-          })
-          .catch((error) => {
-            createErrorToast(error.message);
-          })
-      })
-      .catch((e) => {
-            console.log(e.errors);
-            setIsChannelNameError(true);
-            setChannelNameError(e.errors[0]);
-          })
+      checkCensore(text);
+      schema
+        .validate({ name: text })
+        .then((result) => {
+          setIsFetching(true);
+          axios
+            .patch(`/api/v1/channels/${channel.id}`, editedChannel, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then((response) => {
+              setActiveChannel(response.data);
+              setText("");
+              setIsFetching(false);
+              renaimedChannelToast();
+            })
+            .catch((error) => {
+              createErrorToast(error.message);
+            });
+        })
+        .catch((e) => {
+          console.log(e.errors);
+          setIsChannelNameError(true);
+          setChannelNameError(e.errors[0]);
+        });
     } catch (e) {
+      setIsChannelNameError(true);
+      if (e.message == "Obscene word") {
+        setChannelNameError(e.message);
+      }
       console.error(e.message);
       setIsFetching(false);
     }
@@ -134,7 +152,8 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
               {i18n.t("chatForm.rename")}
             </button>
           ) : (
-            <button type='submit'
+            <button
+              type="submit"
               onClick={() => updateChannel(channel)}
               disabled={isFetching}
             >
@@ -146,16 +165,22 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
       );
     }
   };
-    const formSubmit = (e, channel) => {
+  const formSubmit = (e, channel) => {
     e.preventDefault();
     updateChannel(channel);
-  }
+  };
   return (
     <>
-      <p className='channel-logo' onClick={() => handleClick(channel.id)}># {channel.name}</p>
+      <p className="channel-logo" onClick={() => handleClick(channel.id)}>
+        # {channel.name}
+      </p>
       {isEditing && (
         <form onSubmit={(e) => formSubmit(e, channel)}>
-          <input type='text' onChange={(e) => setText(e.target.value)} value={text}></input>
+          <input
+            type="text"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+          ></input>
           {isChannelNameError && <p>{errorReturn(channelNameError)}</p>}
         </form>
       )}

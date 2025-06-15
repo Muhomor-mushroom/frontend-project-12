@@ -13,15 +13,6 @@ const messageSubmit = async (data) => {
   return resp.data;
 };
 
-const createMessage = (message) => {
-  return (
-    <div key={message.id} className="message-container">
-      <p className="message-text">
-        {message.userName}: {message.body}
-      </p>
-    </div>
-  );
-};
 const Messages = ({ messages, activeChannel }) => {
   if (activeChannel == null) {
     return null;
@@ -61,9 +52,17 @@ const Messages = ({ messages, activeChannel }) => {
         </h3>
       </div>
       <div className="messages-body">
-        {messages.map((message) => {
-          message.channelId == activeChannel.id && createMessage(message)
-        })}
+        {messages.map(
+          (message) =>
+
+            message.channelId == activeChannel.id && !filter.check(message.body) && (
+              <div key={message.id} className={`message-container ${message.userName == activeUser.userName ? 'author-message' : null}`}>
+                <p className="message-text">
+                  {message.userName}: {message.body}
+                </p>
+              </div>
+            )
+        )}
       </div>
       <div className="messages-bottom">
         <form onSubmit={handleSubmit}>

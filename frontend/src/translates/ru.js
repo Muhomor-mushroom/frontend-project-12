@@ -19,6 +19,7 @@ export default {
             usernameMaxError: 'Имя должно содержать не более 20 символов',
             passwordMinError: 'Пароль должен содержать не менее 6 символов',
             confirmError: 'Пароли должны совпадать',
+            ObsceneError: 'Нецензурное слово',
         },
         chatForm: {
             channels: 'Каналы',
@@ -39,7 +40,8 @@ export default {
             deletedChannelToast: 'Канал успешно удален',
             createdChannelToast: 'Канал успешно добавлен',
             renaimedChannelToast: 'Канал успешно переименован',
-            networkErrorToast: 'Ошибка сети:'
+            networkErrorToast: 'Ошибка сети:',
+            ObsceneError: 'Нецензурное слово'
         }
     }
 }
