@@ -69,6 +69,7 @@ const ChatPage = () => {
       <div className="channels-container">
         <Channels channels={channels} setActiveChannel={setActiveChannel} />
         <a className="log-out" onClick={() => logOut()}>{i18n.t('chatForm.logOut')}</a>
+        <button onClick={() => window.location = '/'}>{i18n.t('chatForm.hexletChannel')}</button>
       </div>
       <div className="messages-container">
         <Messages messages={messages} activeChannel={activeChannel} />
