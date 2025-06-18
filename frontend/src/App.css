@@ -83,7 +83,9 @@
   position: relative;
   margin: 20px 0;
 }
-
+.channelSpan {
+  margin-right: 5px;
+}
 .floating-label input {
   width: 100%;
   padding: 10px;
