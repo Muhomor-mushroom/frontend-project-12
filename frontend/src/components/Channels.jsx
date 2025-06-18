@@ -123,7 +123,7 @@ const Channels = ({ channels, setActiveChannel }) => {
       );
     } else {
       return (
-        <>
+        <ul>
           {channels.map((channel) => (
             <Channel
               handleClick={() => handleSelect(channel)}
@@ -133,7 +133,7 @@ const Channels = ({ channels, setActiveChannel }) => {
               setActiveChannel={setActiveChannel}
             />
           ))}
-        </>
+        </ul>
       );
     }
   };

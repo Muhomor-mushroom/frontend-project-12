@@ -180,9 +180,9 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     updateChannel(channel);
   };
   return (
-    <div className='channel-body'>
+    <li className='channel-body'>
       <button className="channel-logo" aria-label={channel.name} type="button" onClick={() => handleClick(channel.id)}>
-        {/* <span className="channelSpan">#</span> */}
+        <span className="channelSpan">#</span>
         {channel.name}
       </button>
       {isEditing && (
@@ -196,6 +196,6 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         </form>
       )}
       {createButtons(channel)}
-    </div>
+    </li>
   );
 };
