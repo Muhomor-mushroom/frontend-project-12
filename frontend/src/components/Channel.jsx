@@ -181,7 +181,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
   };
   return (
     <div className='channel-body'>
-      <button className="channel-logo" name={channel.name} onClick={() => handleClick(channel.id)}>
+      <button className="channel-logo" role="button" name={channel.name} onClick={() => handleClick(channel.id)}>
         # {channel.name}
       </button>
       {isEditing && (
