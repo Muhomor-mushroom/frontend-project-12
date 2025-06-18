@@ -183,7 +183,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     <div className='channel-body'>
       <button className="channel-logo" role="button" name={channel.name} onClick={() => handleClick(channel.id)}>
         <span>#</span>
-        {` channel.name`}
+        {` ${channel.name}`}
       </button>
       {isEditing && (
         <form className='channel-editing-form' onSubmit={(e) => formSubmit(e, channel)}>
