@@ -53,7 +53,22 @@ const SignupForm = () => {
       { abortEarly: false }
     );
   };
-
+  const nameValidate = (data) => {
+    const { name } = data;
+    return schema.validateSync({ name }, {abortEarly: false})
+  }
+  const nameCheck = (e) => {
+    e.preventDefault();
+    const value = e.target.value;
+    const data = { value };
+    try {
+      const result = nameValidate(data);
+      console.log(result);
+    }
+    catch (e) {
+     console.log(e.errors)
+    }
+  }
   const handleSignup = async (data) => {
     const { name, password } = data;
     try {
@@ -151,39 +166,33 @@ const SignupForm = () => {
         {({ isSubmitting }) => (
           <Form>
             <div className="form-group signup-group">
-              <label className="signup-label" htmlFor="name">
-                {i18n.t("signupForm.name")}
-              </label>
               <Field
                 type="name"
                 name="name"
                 className="form-control signup-field"
+                placeholder={i18n.t("signupForm.name")}
               />
               {isUsernameError && (
                 <p className="signup-login-error">{usernameError}</p>
               )}
             </div>
             <div className="form-group signup-group">
-              <label className="signup-label" htmlFor="password">
-                {i18n.t("signupForm.password")}
-              </label>
               <Field
                 type="password"
                 name="password"
                 className="form-control signup-field"
+                placeholder={i18n.t("signupForm.password")}
               />
               {passwordIsError && (
                 <p className="signup-login-error">{passwordError}</p>
               )}
             </div>
             <div className="form-group signup-group">
-              <label className="signup-label" htmlFor="confirmPassword">
-                {i18n.t("signupForm.confirmation")}
-              </label>
               <Field
                 type="password"
                 name="confirmPassword"
                 className="form-control signup-field"
+                placeholder={i18n.t("signupForm.confirmation")}
               />
               {isConfirmError && (
                 <p className="signup-login-error">{confirmError}</p>
