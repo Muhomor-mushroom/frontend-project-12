@@ -60,9 +60,9 @@ const ChatPage = () => {
   }
 
   if (!token) return null;
-
   const channels = useSelector(channelsSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
+  console.log(channels)
   return (
     <div className="chat-container">
       <ToastContainer />
