@@ -25,7 +25,7 @@
 }
 .registration-link:hover {
   color: black;
-  font-size: x-large;
+  /* font-size: x-large; */
   background-color: bisque;
 }
 .signup-form {
@@ -85,7 +85,7 @@
 .login-submit:hover {
   background-color: bisque;
   color: black;
-  font-size: x-large;
+  /* font-size: x-large; */
 }
 .input-login {
   padding: 10px 15px; /* удобные отступы */
@@ -199,7 +199,7 @@
 .link-on-chat:hover {
   color: black;
   background-color: bisque;
-  font-size: xx-large;
+  /* font-size: xx-large; */
 }
 .signup-link-on-chat {
   cursor: pointer;
@@ -213,7 +213,7 @@
 .signup-link-on-chat:hover {
   color: black;
   background-color: bisque;
-  font-size: x-large;
+  /* font-size: x-large; */
 }
 .messages-container {
   flex: 0 0 70%; /* Не растягивается, не сжимается, базовая ширина 70% */
