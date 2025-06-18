@@ -53,22 +53,6 @@ const SignupForm = () => {
       { abortEarly: false }
     );
   };
-  const nameValidate = (data) => {
-    const { name } = data;
-    return schema.validateSync({ name }, {abortEarly: false})
-  }
-  const nameCheck = (e) => {
-    e.preventDefault();
-    const value = e.target.value;
-    const data = { value };
-    try {
-      const result = nameValidate(data);
-      console.log(result);
-    }
-    catch (e) {
-     console.log(e.errors)
-    }
-  }
   const handleSignup = async (data) => {
     const { name, password } = data;
     try {
@@ -80,6 +64,7 @@ const SignupForm = () => {
       });
       console.log(resp);
       setIsError(false);
+      setFetchError(null);
       const { token } = resp.data;
       localStorage.setItem("token", token);
       localStorage.setItem("userName", name);
@@ -105,6 +90,7 @@ const SignupForm = () => {
             break;
           }
           default:
+            console.log(error);
             break;
         }
         error.errors.reverse().forEach((error) => {
@@ -148,7 +134,7 @@ const SignupForm = () => {
         });
       } else {
         setFetchError(error.message);
-        toastify();
+        toast(error.message);
       }
     }
   };
@@ -165,35 +151,41 @@ const SignupForm = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <div className="form-group signup-group">
+            <div className="form-group signup-group floating-label">
               <Field
                 type="name"
                 name="name"
                 className="form-control signup-field"
-                placeholder={i18n.t("signupForm.name")}
+                placeholder=" "
+                id="name"
               />
+              <label htmlFor="name">{i18n.t("signupForm.name")}</label>
               {isUsernameError && (
                 <p className="signup-login-error">{usernameError}</p>
               )}
             </div>
-            <div className="form-group signup-group">
+            <div className="form-group signup-group floating-label">
               <Field
                 type="password"
                 name="password"
+                id="password"
                 className="form-control signup-field"
-                placeholder={i18n.t("signupForm.password")}
+                placeholder=" "
               />
+              <label htmlFor="name">{i18n.t("signupForm.password")}</label>
               {passwordIsError && (
                 <p className="signup-login-error">{passwordError}</p>
               )}
             </div>
-            <div className="form-group signup-group">
+            <div className="form-group signup-group floating-label">
               <Field
                 type="password"
                 name="confirmPassword"
+                id="confirmPassword"
                 className="form-control signup-field"
-                placeholder={i18n.t("signupForm.confirmation")}
+                placeholder=" "
               />
+              <label htmlFor="name">{i18n.t("signupForm.confirmation")}</label>
               {isConfirmError && (
                 <p className="signup-login-error">{confirmError}</p>
               )}
@@ -214,6 +206,9 @@ const SignupForm = () => {
       >
         {i18n.t("signupForm.hexletChat")}
       </a>
+      {fetchError !== null ? (
+        <p className="signup-login-error">{i18n.t("signupForm.existError")}</p>
+      ) : null}
     </div>
   );
 };

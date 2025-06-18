@@ -77,6 +77,40 @@
   background-color: bisque;
   color: black;
 }
+/* --------------------------------------- */
+
+.floating-label {
+  position: relative;
+  margin: 20px 0;
+}
+
+.floating-label input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.floating-label label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+/* Поднимаем label при фокусе или заполнении */
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 12px;
+  background: white;
+  padding: 0 5px;
+  color: #007bff;
+}
+
+/* ---------------------------------------- */
 .error-container {
   font-size: xx-large;
   text-align: center;
