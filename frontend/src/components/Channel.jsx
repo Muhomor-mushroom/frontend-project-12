@@ -2,11 +2,11 @@ import { use, useState } from "react";
 import axios from "axios";
 import i18n from "../i18n";
 import * as yup from "yup";
-import { deletedChannelToast } from "./chatForm.jsx";
+import { deletedChannelToast } from "./Chat.jsx";
 import {
   errorToast as createErrorToast,
   renaimedChannelToast,
-} from "./chatForm.jsx";
+} from "./Chat.jsx";
 import filter from "leo-profanity";
 
 const errorReturn = (error) => {

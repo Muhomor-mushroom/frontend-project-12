@@ -4,7 +4,7 @@ import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import * as yup from "yup";
 import i18n from "../i18n.js";
-import { errorToast as createErrorToast, createdChannelToast } from "./chatForm.jsx";
+import { errorToast as createErrorToast, createdChannelToast } from "./Chat.jsx";
 import filter from "leo-profanity";
 
 const errorReturn = (error) => {

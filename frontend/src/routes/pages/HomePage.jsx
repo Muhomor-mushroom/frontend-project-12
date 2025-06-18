@@ -1,6 +1,6 @@
-import ChatForm from "../../components/chatForm.jsx"
+import ChatForm from "../../components/Chat.jsx"
 
-export default ({i18n}) => {
+export default () => {
  return (
     <ChatForm />
  )

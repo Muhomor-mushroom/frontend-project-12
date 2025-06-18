@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { io } from "socket.io-client";
-import axios from "axios";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import channelsReducer from "./slices/channelsSlice.js";
