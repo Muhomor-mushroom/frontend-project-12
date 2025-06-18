@@ -56,7 +56,7 @@ const Messages = ({ messages, activeChannel }) => {
           (message) =>
 
             message.channelId == activeChannel.id && !filter.check(message.body) && (
-              <div key={message.id} className={`message-container ${message.userName == activeUser.userName ? 'author-message' : null}`}>
+              <div key={message.id} className={`message-container ${message.userName == activeUser.userName ? 'author-message' : 'default-message'}`}>
                 <p className="message-text">
                   {message.userName}: {message.body}
                 </p>

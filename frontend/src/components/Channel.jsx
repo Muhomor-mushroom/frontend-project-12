@@ -56,7 +56,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
       throw new Error("Obscene word");
     }
   };
-  const updateChannel = (channel) => {
+  const updateChannel = (channel, setIsChanging) => {
     const editedChannel = { name: text };
     try {
       checkChannelName(text, channel);
@@ -76,6 +76,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
               setText("");
               setIsFetching(false);
               renaimedChannelToast();
+              setIsChanging(false);
             })
             .catch((error) => {
               createErrorToast(error.message);
@@ -95,7 +96,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
       setIsFetching(false);
     }
   };
-  const deleteChannel = (channel) => {
+  const deleteChannel = (channel, setIsChanging) => {
     setIsDeliting(true);
     setIsFetching(true);
     axios
@@ -108,6 +109,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         setActiveChannel(channels[0]);
         setIsFetching(false);
         deletedChannelToast();
+        setIsChanging(false);
       })
       .catch((e) => {
         setIsFetching(false);
@@ -144,8 +146,10 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     setIsEditing(!isEditing);
   };
   const createButtons = (channel) => {
+    const [isChanging, setIsChanging] = useState(false);
     if (channel.name !== "random" && channel.name !== "general") {
-      return (
+      if (isChanging) {
+        return (
         <>
           {!isEditing ? (
             <button onClick={() => makeEdit()} disabled={isFetching}>
@@ -154,15 +158,20 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
           ) : (
             <button
               type="submit"
-              onClick={() => updateChannel(channel)}
+              onClick={() => updateChannel(channel, setIsChanging)}
               disabled={isFetching}
             >
               {i18n.t("chatForm.submit")}
             </button>
           )}
-          {delitingForm(channel)}
+          {delitingForm(channel, setIsChanging)}
         </>
       );
+      } else {
+        return (
+          <button onClick={() => setIsChanging(true)}>{i18n.t("chatForm.changeChannel")}</button>
+        )
+      }
     }
   };
   const formSubmit = (e, channel) => {

@@ -2,23 +2,23 @@ import {
   createSlice,
   createEntityAdapter,
 } from '@reduxjs/toolkit'
-const messagesAdapter = createEntityAdapter();
+const messagesAdapter = createEntityAdapter()
 
 const initialState = messagesAdapter.getInitialState()
 
 const messagesSlice = createSlice({
-    name: 'messages',
-    initialState,
-    reducers: {
-        addMessage: messagesAdapter.addOne,
-        addMessages: messagesAdapter.addMany,
-        removeMessage: (state, {payload}) => {
-            messagesAdapter.removeOne(state, payload);
-        },
-        removeMessages: messagesAdapter.removeMany,
-    }
+  name: 'messages',
+  initialState,
+  reducers: {
+    addMessage: messagesAdapter.addOne,
+    addMessages: messagesAdapter.addMany,
+    removeMessage: (state, { payload }) => {
+      messagesAdapter.removeOne(state, payload)
+    },
+    removeMessages: messagesAdapter.removeMany,
+  },
 })
 
-export const { actions } = messagesSlice;
-export const selectors = messagesAdapter.getSelectors((state) => state.messages);
-export default messagesSlice.reducer;
+export const { actions } = messagesSlice
+export const selectors = messagesAdapter.getSelectors(state => state.messages)
+export default messagesSlice.reducer

@@ -1,39 +1,27 @@
 import { Formik, Field, Form } from "formik";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import i18n from "../i18n";
 import { ToastContainer, toast } from 'react-toastify';
 
-const renderError = (errorState) => {
-  if (errorState !== null) {
-    return (
-      <div className='error-container'>
-        <h3>{errorState}</h3>
-      </div>
-    );
-  }
-};
-
 export default () => {
-  const [error, setError] = useState(null);
-  const toastify = () => toast(error);
-
+  const [isError, setIsError] = useState(false);
   const handleLogin = async (data) => {
     try {
       const resp = await axios.post("/api/v1/login", {
         username: data.name,
         password: data.password,
       });
-      setError(null);
+      setIsError(false);
       const { token, username } = resp.data;
       localStorage.setItem('token', token);
       localStorage.setItem('userName', username);
       console.log(resp.data);
       window.location = "/";
     } catch (error) {
-      setError(error.message);
-      toastify();
+      toast(error.message);
+      setIsError(true);
     }
   };
   return (
@@ -65,6 +53,7 @@ export default () => {
                   className="form-control input-login"
                 />
             </div>
+            {isError && <p className='login-error'>{i18n.t('loginForm.unauthorized')}</p>}
             <button className="login-submit" type="submit" disabled={isSubmitting}>
               {i18n.t('loginForm.submit')}
             </button>

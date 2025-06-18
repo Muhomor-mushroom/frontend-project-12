@@ -12,3 +12,5 @@ lint:
 
 lint-fix:
 	npx eslint --fix .
+run:
+	cd ./frontend && npm run dev

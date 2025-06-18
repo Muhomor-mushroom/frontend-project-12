@@ -8,13 +8,14 @@ import { setUser } from "../slices/userSlice.js";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import i18n from "../i18n.js";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 let schema = yup.object().shape({
   name: yup.string().required().min(3).max(20),
   password: yup.string().required().min(6),
   confirmPassword: yup
-    .string().required()
+    .string()
+    .required()
     .oneOf([yup.ref("password")], "confirmPassword must match with password"),
 });
 
@@ -48,7 +49,10 @@ const SignupForm = () => {
 
   const dataCheck = (data) => {
     const { password, confirmPassword, name } = data;
-    return schema.validateSync({ name, password, confirmPassword }, { abortEarly: false });
+    return schema.validateSync(
+      { name, password, confirmPassword },
+      { abortEarly: false }
+    );
   };
 
   const handleSignup = async (data) => {
@@ -72,66 +76,66 @@ const SignupForm = () => {
     } catch (error) {
       if (error.name == "ValidationError") {
         console.log(error.errors);
-        switch(false) {
-          case(error.errors.includes('name')): {
+        switch (false) {
+          case error.errors.includes("name"): {
             setIsUserNameError(false);
             setUsernameError(null);
           }
-          case(error.errors.includes('password')): {
+          case error.errors.includes("password"): {
             setPasswordIsError(false);
             setPasswordError(null);
           }
-          case(error.errors.includes('confirmPassword')): {
+          case error.errors.includes("confirmPassword"): {
             setIsConfirmError(false);
             setConfirmError(null);
             break;
           }
           default:
             break;
-        };
+        }
         error.errors.reverse().forEach((error) => {
           console.log(error);
-          switch(error) {
-            case ('name must be at least 3 characters'):
-              case('name is a required field'): {
-                setIsUserNameError(true);
-                if (error == 'name is a required field') {
-                  setUsernameError(i18n.t('signupForm.requiredFieldError'));
-                } else {
-                  setUsernameError(i18n.t('signupForm.usernameMinError'))
-                }
-                break;
+          switch (error) {
+            case "name must be at least 3 characters":
+            case "name must be at most 20 characters":
+            case "name is a required field": {
+              setIsUserNameError(true);
+              if (error == "name is a required field") {
+                setUsernameError(i18n.t("signupForm.requiredFieldError"));
+              } else {
+                setUsernameError(i18n.t("signupForm.usernameError"));
               }
-            case ('password must be at least 6 characters'):
-              case('password is a required field'): {
-                setPasswordIsError(true);
-                if (error == 'password is a required field') {
-                  setPasswordError(i18n.t('signupForm.requiredFieldError'));
-                } else {
-                  setPasswordError(i18n.t('signupForm.passwordMinError'))
-                }
-                break;
+              break;
+            }
+            case "password must be at least 6 characters":
+            case "password is a required field": {
+              setPasswordIsError(true);
+              if (error == "password is a required field") {
+                setPasswordError(i18n.t("signupForm.requiredFieldError"));
+              } else {
+                setPasswordError(i18n.t("signupForm.passwordMinError"));
               }
-            case ('confirmPassword is a required field'):
-              case ('confirmPassword must match with password'): {
-                setIsConfirmError(true);
-                if (error == 'confirmPassword is a required field') {
-                  setConfirmError(i18n.t('signupForm.requiredFieldError'));
-                } else {
-                  setConfirmError(i18n.t('signupForm.confirmError'))
-                }
-                break;
+              break;
+            }
+            case "confirmPassword is a required field":
+            case "confirmPassword must match with password": {
+              setIsConfirmError(true);
+              if (error == "confirmPassword is a required field") {
+                setConfirmError(i18n.t("signupForm.requiredFieldError"));
+              } else {
+                setConfirmError(i18n.t("signupForm.confirmError"));
               }
+              break;
+            }
             default: {
               break;
             }
           }
         });
+      } else {
+        setFetchError(error.message);
+        toastify();
       }
-      else {
-      setFetchError(error.message);
-      toastify();
-    }
     }
   };
 
@@ -149,7 +153,7 @@ const SignupForm = () => {
           <Form>
             <div className="form-group signup-group">
               <label className="signup-label" htmlFor="name">
-                {i18n.t('signupForm.name')}
+                {i18n.t("signupForm.name")}
               </label>
               <Field
                 type="name"
@@ -162,7 +166,7 @@ const SignupForm = () => {
             </div>
             <div className="form-group signup-group">
               <label className="signup-label" htmlFor="password">
-                {i18n.t('signupForm.password')}
+                {i18n.t("signupForm.password")}
               </label>
               <Field
                 type="password"
@@ -175,7 +179,7 @@ const SignupForm = () => {
             </div>
             <div className="form-group signup-group">
               <label className="signup-label" htmlFor="confirmPassword">
-                {i18n.t('signupForm.confirmation')}
+                {i18n.t("signupForm.confirmation")}
               </label>
               <Field
                 type="password"
@@ -191,12 +195,17 @@ const SignupForm = () => {
               type="submit"
               disabled={isSubmitting}
             >
-              {i18n.t('signupForm.submit')}
+              {i18n.t("signupForm.submit")}
             </button>
           </Form>
         )}
       </Formik>
-      <a className="signup-link-on-chat" onClick={() => window.location = "/"}>{i18n.t('signupForm.hexletChat')}</a>
+      <a
+        className="signup-link-on-chat"
+        onClick={() => (window.location = "/")}
+      >
+        {i18n.t("signupForm.hexletChat")}
+      </a>
     </div>
   );
 };

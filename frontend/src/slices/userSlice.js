@@ -1,21 +1,19 @@
 import {
   createSlice,
-  createEntityAdapter,
 } from '@reduxjs/toolkit'
-const userAdapter = createEntityAdapter();
 
 const setNewActiveUser = (state, action) => {
-  state.userName = action.payload;
+  state.userName = action.payload
 }
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: {userName: null},
+  initialState: { userName: null },
   reducers: {
-    setUser: (state, action) => setNewActiveUser(state,action), // Сохраняем данные пользователя
-    clearUser: () => state.userName = null, // Очищаем при выходе
+    setUser: (state, action) => setNewActiveUser(state, action), // Сохраняем данные пользователя
+    clearUser: state => state.userName = null, // Очищаем при выходе
   },
-});
+})
 
-export const { setUser, clearUser } = userSlice.actions;
-export default userSlice.reducer;
+export const { setUser, clearUser } = userSlice.actions
+export default userSlice.reducer

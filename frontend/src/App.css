@@ -131,6 +131,9 @@
 .label-login:hover {
   color: #333; /* темнее при наведении */
 }
+.login-error {
+  color: red;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -219,8 +222,7 @@
   cursor: pointer;
 }
 .messages-body {
-  display: flex;
-  flex-direction: column;
+  overflow: auto;
 }
 .messages-bottom {
   display: flex;
@@ -229,10 +231,17 @@
 .messages-bottom-submit {
   background-color: black;
   color: white;
-  margin-left: 15px;
 }
 .author-message {
   color: rgb(178, 93, 93);
+  float: left;
+  width: 100%;
+}
+.default-message {
+  color: black;
+  float: right;
+  margin-right: 50px;
+  width: 100%;
 }
 
 @keyframes logo-spin {
