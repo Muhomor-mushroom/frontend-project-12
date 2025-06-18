@@ -181,7 +181,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
   };
   return (
     <div className='channel-body'>
-      <button className="channel-logo" title={channel.name} aria-label={channel.name} type="button" role="button" name={channel.name} onClick={() => handleClick(channel.id)}>
+      <button className="channel-logo" type="button"name={channel.name} onClick={() => handleClick(channel.id)}>
         <span className="channelSpan">#</span>
         {channel.name}
       </button>
