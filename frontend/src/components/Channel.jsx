@@ -180,9 +180,9 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
   };
   return (
     <>
-      <p className="channel-logo" onClick={() => handleClick(channel.id)}>
+      <button className="channel-logo" name={channel.name} onClick={() => handleClick(channel.id)}>
         # {channel.name}
-      </p>
+      </button>
       {isEditing && (
         <form onSubmit={(e) => formSubmit(e, channel)}>
           <input
