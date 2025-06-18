@@ -115,13 +115,19 @@
   transition: color 0.2s; /* плавное изменение цвета */
 }
 .channel-logo {
-  color: black;
+  color: white;
   cursor: pointer;
   transition: 0.6s;
+  width: 85%;
 }
 .channel-logo:hover {
-  font-size: 20px;
   color: red;
+}
+.channel-editing-form {
+  margin-top: 10px;
+}
+.channel-body {
+  margin-top: 7px;
 }
 .form-row {
   display: flex;

@@ -7,16 +7,10 @@ const rollbarConfig = {
   environment: 'testenv',
 };
 
-function TestError() {
-  const a = null;
-  return a.hello();
-}
-
 function App () {
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
-        <TestError />
       </ErrorBoundary>
       <MainForm />
     </Provider>

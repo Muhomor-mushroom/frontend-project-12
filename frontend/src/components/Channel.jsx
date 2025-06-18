@@ -119,7 +119,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     if (channel.name !== "random" && channel.name !== "general") {
       if (isDeliting) {
         return (
-          <>
+          <div channel-editing-form>
             <p>{i18n.t("chatForm.deleteQuestion")}</p>
             <button
               onClick={() => deleteChannel(channel)}
@@ -130,7 +130,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
             <button onClick={() => setIsDeliting(false)} disabled={isFetching}>
               {i18n.t("chatForm.no")}
             </button>
-          </>
+          </div>
         );
       } else {
         return (
@@ -152,7 +152,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         return (
         <>
           {!isEditing ? (
-            <button onClick={() => makeEdit()} disabled={isFetching}>
+            <button className='channel-editing-form' onClick={() => makeEdit()} disabled={isFetching}>
               {i18n.t("chatForm.rename")}
             </button>
           ) : (
@@ -160,6 +160,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
               type="submit"
               onClick={() => updateChannel(channel, setIsChanging)}
               disabled={isFetching}
+              className='channel-editing-form'
             >
               {i18n.t("chatForm.submit")}
             </button>
@@ -169,7 +170,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
       );
       } else {
         return (
-          <button onClick={() => setIsChanging(true)}>{i18n.t("chatForm.changeChannel")}</button>
+          <button className="channel-editing-form" onClick={() => setIsChanging(true)}>{i18n.t("chatForm.changeChannel")}</button>
         )
       }
     }
@@ -179,12 +180,12 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     updateChannel(channel);
   };
   return (
-    <>
+    <div className='channel-body'>
       <button className="channel-logo" name={channel.name} onClick={() => handleClick(channel.id)}>
         # {channel.name}
       </button>
       {isEditing && (
-        <form onSubmit={(e) => formSubmit(e, channel)}>
+        <form className='channel-editing-form' onSubmit={(e) => formSubmit(e, channel)}>
           <input
             type="text"
             onChange={(e) => setText(e.target.value)}
@@ -194,6 +195,6 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         </form>
       )}
       {createButtons(channel)}
-    </>
+    </div>
   );
 };
