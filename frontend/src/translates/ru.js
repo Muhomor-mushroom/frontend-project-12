@@ -11,7 +11,7 @@ export default {
     signupForm: {
       name: 'Имя пользователя',
       password: 'Пароль',
-      confirmation: 'Подтведите пароль',
+      confirmation: 'Подтвердите пароль',
       submit: 'Войти',
       hexletChat: 'Hexlet Chat',
       existError: 'Этот пользователь уже существует',
