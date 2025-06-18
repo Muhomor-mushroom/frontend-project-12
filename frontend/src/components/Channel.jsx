@@ -180,9 +180,9 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
   };
   return (
     <>
-      <button className="channel-logo" onClick={() => handleClick(channel.id)}>
+    {channel.name == 'general' || channel.name == 'random' ? (<p className="channel-logo" onClick={() => handleClick(channel.id)}>
         # {channel.name}
-      </button>
+      </p>) : <button className="channel-logo" onClick={() => handleClick(channel.id)}> # {channel.name}</button>}
       {isEditing && (
         <form onSubmit={(e) => formSubmit(e, channel)}>
           <input
