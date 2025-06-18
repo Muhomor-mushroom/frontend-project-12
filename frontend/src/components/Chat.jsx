@@ -28,7 +28,7 @@ const ChatPage = () => {
   const [activeChannel, setActiveChannel] = useState({});
   const dispatch = useDispatch();
       if (!token) {
-      return;
+      window.location = '/login'
     }
   useEffect(() => {
     const fetchData = async () => {
