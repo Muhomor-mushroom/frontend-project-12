@@ -34,6 +34,7 @@ export default {
       name: 'Имя канала',
       submit: 'Подтвердить',
       newMessage: 'Новое сообщение',
+      channelName: 'Имя канала',
       channelExistError: 'Этот канал уже сущестует',
       requiredFieldError: 'Это обязатаельное поле',
       ChannelNameError: 'От 3 до 20 символов',

@@ -186,12 +186,16 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         {channel.name}
       </button>
       {isEditing && (
-        <form className='channel-editing-form' onSubmit={(e) => formSubmit(e, channel)}>
+        <form className='channel-editing-form floating-label' onSubmit={(e) => formSubmit(e, channel)}>
           <input
             type="text"
+            name='text'
+            id='text'
             onChange={(e) => setText(e.target.value)}
-            value={text}
+            placeholder=" "
+            value=''
           ></input>
+          <label htmlFor="text">{i18n.t('chatForm.channelName')}</label>
           {isChannelNameError && <p>{errorReturn(channelNameError)}</p>}
         </form>
       )}
