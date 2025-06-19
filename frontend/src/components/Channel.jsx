@@ -193,7 +193,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
             id='text'
             onChange={(e) => setText(e.target.value)}
             placeholder=" "
-            value=''
+            value={text}
           ></input>
           <label htmlFor="text">{i18n.t('chatForm.channelName')}</label>
           {isChannelNameError && <p>{errorReturn(channelNameError)}</p>}
