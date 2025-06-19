@@ -33,6 +33,7 @@ const SignupForm = () => {
   const [passwordError, setPasswordError] = useState(null);
   const [isConfirmError, setIsConfirmError] = useState(false);
   const [confirmError, setConfirmError] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const toastify = () => toast(fetchError);
 
@@ -62,7 +63,6 @@ const SignupForm = () => {
         username: name,
         password: password,
       });
-      console.log(resp);
       setIsError(false);
       setFetchError(null);
       const { token } = resp.data;
@@ -145,7 +145,9 @@ const SignupForm = () => {
       <Formik
         initialValues={{ name: "", password: "", confirmPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
+          setButtonDisabled(true);
           handleSignup(values);
+          setButtonDisabled(false);
           setSubmitting(false);
         }}
       >
@@ -193,7 +195,7 @@ const SignupForm = () => {
             <button
               className="signup-button"
               type="submit"
-              disabled={isSubmitting}
+              disabled={buttonDisabled}
             >
               {i18n.t("signupForm.submit")}
             </button>
