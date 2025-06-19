@@ -119,18 +119,27 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
     if (channel.name !== "random" && channel.name !== "general") {
       if (isDeliting) {
         return (
-          <div channel-editing-form>
-            <p>{i18n.t("chatForm.deleteQuestion")}</p>
-            <button
-              onClick={() => deleteChannel(channel)}
-              disabled={isFetching}
-            >
-              {i18n.t("chatForm.yes")}
-            </button>
-            <button onClick={() => setIsDeliting(false)} disabled={isFetching}>
-              {i18n.t("chatForm.no")}
-            </button>
+          <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>{i18n.t("chatForm.deleteQuestion")}</h3>
+            <div className="modal-actions">
+              <button
+                onClick={() => deleteChannel(channel, setIsDeliting)}
+                disabled={isFetching}
+                className="btn-confirm"
+              >
+                {i18n.t("chatForm.yes")}
+              </button>
+              <button 
+                onClick={() => setIsDeliting(false)} 
+                disabled={isFetching}
+                className="btn-cancel"
+              >
+                {i18n.t("chatForm.no")}
+              </button>
+            </div>
           </div>
+        </div>
         );
       } else {
         return (
