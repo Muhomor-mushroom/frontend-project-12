@@ -14,7 +14,7 @@ export default {
       confirmation: 'Подтвердите пароль',
       submit: 'Войти',
       hexletChat: 'Hexlet Chat',
-      existError: 'Этот пользователь уже существует',
+      existError: 'Такой пользователь уже существует',
       requiredFieldError: 'Это обязатаельное поле',
       usernameError: 'От 3 до 20 символов',
       passwordMinError: 'Не менее 6 символов',
