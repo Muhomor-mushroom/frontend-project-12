@@ -153,7 +153,7 @@ const SignupForm = () => {
           <Form>
             <div className="form-group signup-group floating-label">
               <Field
-                type="name"
+                type="text"
                 name="name"
                 className="form-control signup-field"
                 placeholder=" "
@@ -166,7 +166,7 @@ const SignupForm = () => {
             </div>
             <div className="form-group signup-group floating-label">
               <Field
-                type="password"
+                type="text"
                 name="password"
                 id="password"
                 className="form-control signup-field"
@@ -179,7 +179,7 @@ const SignupForm = () => {
             </div>
             <div className="form-group signup-group floating-label">
               <Field
-                type="password"
+                type="text"
                 name="confirmPassword"
                 id="confirmPassword"
                 className="form-control signup-field"
