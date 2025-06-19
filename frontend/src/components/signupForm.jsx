@@ -153,10 +153,10 @@ const SignupForm = () => {
           <Form>
             <div className="form-group signup-group floating-label">
               <Field
-                type="text"
+                type="name"
                 name="name"
                 className="form-control signup-field"
-                placeholder=" "
+                placeholder=""
                 id="name"
               />
               <label htmlFor="name">{i18n.t("signupForm.name")}</label>
@@ -166,26 +166,26 @@ const SignupForm = () => {
             </div>
             <div className="form-group signup-group floating-label">
               <Field
-                type="text"
+                type="password"
                 name="password"
                 id="password"
                 className="form-control signup-field"
-                placeholder=" "
+                placeholder=""
               />
-              <label htmlFor="name">{i18n.t("signupForm.password")}</label>
+              <label htmlFor="password">{i18n.t("signupForm.password")}</label>
               {passwordIsError && (
                 <p className="signup-login-error">{passwordError}</p>
               )}
             </div>
             <div className="form-group signup-group floating-label">
               <Field
-                type="text"
+                type="confirmPassword"
                 name="confirmPassword"
                 id="confirmPassword"
                 className="form-control signup-field"
-                placeholder=" "
+                placeholder=""
               />
-              <label htmlFor="name">{i18n.t("signupForm.confirmation")}</label>
+              <label htmlFor="confirmPassword">{i18n.t("signupForm.confirmation")}</label>
               {isConfirmError && (
                 <p className="signup-login-error">{confirmError}</p>
               )}
