@@ -44,7 +44,7 @@ export default {
       networkErrorToast: 'Ошибка сети:',
       ObsceneError: 'Нецензурное слово',
       changeChannel: 'Управление каналом',
-      hexletChannel: 'Hexlet Chat'
+      hexletChannel: 'Hexlet Chat',
     },
   },
 }
