@@ -69,6 +69,7 @@ const Messages = ({ messages, activeChannel }) => {
           <input
             type="text"
             value={text}
+            aria-label={i18n.t("chatForm.newMessage")}
             onChange={handleInputChange}
             className="messages-input"
           />

@@ -33,6 +33,7 @@ export default {
       logOut: 'Выйти',
       name: 'Имя',
       submit: 'Подтвердить',
+      newMessage: 'Новое сообщение',
       channelExistError: 'Этот канал уже сущестует',
       requiredFieldError: 'Это обязатаельное поле',
       nameMinError: 'Имя должно содержать не менее 3 символов',
