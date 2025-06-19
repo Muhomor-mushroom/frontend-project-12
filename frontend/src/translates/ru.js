@@ -31,7 +31,7 @@ export default {
       yes: 'да',
       no: 'нет',
       logOut: 'Выйти',
-      name: 'Имя',
+      name: 'Имя канала',
       submit: 'Подтвердить',
       newMessage: 'Новое сообщение',
       channelExistError: 'Этот канал уже сущестует',

@@ -111,17 +111,15 @@ const Channels = ({ channels, setActiveChannel }) => {
           >
             {({ isSubmitting }) => (
               <Form>
-                <div className="form-group signup-group floating-label">
+                <div className="form-group add-form signup-group floating-label">
                   <Field
                     type="name"
                     name="name"
                     id="name"
                     className="form-control signup-field"
-                    placeholder=""
+                    placeholder=" "
                   />
-                  <label htmlFor="name">
-                    {i18n.t("chatForm.name")}
-                  </label>
+                  <label htmlFor="name">{i18n.t("chatForm.name")}</label>
                 </div>
                 {isError && (
                   <p className="channel-name-error">{errorReturn(textError)}</p>

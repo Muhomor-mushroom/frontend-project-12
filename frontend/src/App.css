@@ -224,6 +224,10 @@
 .channels-title {
   margin-right: 60px;
 }
+.add-form {
+  display: flex;
+  margin-left: 100px;
+}
 .channels-add-button {
   margin-left: 10px;
 }
