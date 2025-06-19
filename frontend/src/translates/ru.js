@@ -38,7 +38,7 @@ export default {
       channelExistError: 'Этот канал уже сущестует',
       requiredFieldError: 'Это обязатаельное поле',
       ChannelNameError: 'От 3 до 20 символов',
-      deletedChannelToast: 'Канал удален',
+      deletedChannelToast: 'Канал удалён',
       createdChannelToast: 'Канал создан',
       renaimedChannelToast: 'Канал переименован',
       networkErrorToast: 'Ошибка сети:',
