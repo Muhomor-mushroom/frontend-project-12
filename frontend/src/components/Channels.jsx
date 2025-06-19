@@ -15,10 +15,10 @@ const errorReturn = (error) => {
     return (i18n.t('chatForm.requiredFieldError'))
   }
   if (error == 'name must be at least 3 characters') {
-    return (i18n.t('chatForm.nameMinError'));
+    return (i18n.t('chatForm.ChannelNameError'));
   }
   if (error == 'name must be at most 20 characters') {
-    return (i18n.t('chatForm.nameMaxError'));
+    return (i18n.t('chatForm.ChannelNameError'));
   }
   if (error == 'Obscene word') {
     return (i18n.t('chatForm.ObsceneError'));
@@ -99,15 +99,17 @@ const Channels = ({ channels, setActiveChannel }) => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <div className="form-group signup-group">
-                <label className="signup-label" htmlFor="name">
-                  {i18n.t('chatForm.name')}
-                </label>
+              <div className="form-group signup-group floating-label">
                 <Field
                   type="name"
                   name="name"
-                  className="form-control signup-field"
+                  id="name"
+                  className="form-control new-channel-field"
+                  placeholder=''
                 />
+                <label className="new-channel-label" htmlFor="name">
+                  {i18n.t('chatForm.name')}
+                </label>
               </div>
               {isError && <p className="channel-name-error">{errorReturn(textError)}</p>}
               <button

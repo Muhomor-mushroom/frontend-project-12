@@ -172,6 +172,9 @@
 .channel-body {
   margin-top: 7px;
 }
+.new-channel-field {
+  max-width: 70%;
+}
 .form-row {
   display: flex;
   margin-bottom: 15px;
@@ -272,6 +275,7 @@
 }
 .messages-body {
   overflow: auto;
+  min-height: 15px;
 }
 .messages-bottom {
   display: flex;

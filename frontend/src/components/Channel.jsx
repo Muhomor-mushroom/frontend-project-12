@@ -17,10 +17,10 @@ const errorReturn = (error) => {
     return i18n.t("chatForm.requiredFieldError");
   }
   if (error == "name must be at least 3 characters") {
-    return i18n.t("chatForm.nameMinError");
+    return i18n.t("chatForm.ChannelNameError");
   }
   if (error == "name must be at most 20 characters") {
-    return i18n.t("chatForm.nameMaxError");
+    return i18n.t("chatForm.ChannelNameError");
   }
   if (error == "Obscene word") {
     return i18n.t("chatForm.ObsceneError");
