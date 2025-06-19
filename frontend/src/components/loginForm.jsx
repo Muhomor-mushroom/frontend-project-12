@@ -35,23 +35,21 @@ export default () => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className="form-row">
+          <Form className="form-row login-container">
             <ToastContainer />
-            <div className="form-group">
-              <InputGroup.Text className='label-login' id="inputGroup-sizing-lg">
-                  {i18n.t('loginForm.name')}
-                </InputGroup.Text>
-              <Field type="name" name="name" className="form-control input-login" />
+            <div className="form-group floating-label login-input">
+              <Field type="name" name="name" id="name" placeholder='' className="form-control input-login" />
+              <label htmlFor="name">{i18n.t('loginForm.name')}</label>
             </div>
-            <div className="form-group">
-                <InputGroup.Text className='label-login' id="inputGroup-sizing-lg">
-                  {i18n.t('loginForm.password')}
-                </InputGroup.Text>
+            <div className="form-group floating-label login-input">
                 <Field
                   type="password"
                   name="password"
+                  id="password"
                   className="form-control input-login"
+                  placeholder=""
                 />
+                <label htmlFor="password">{i18n.t('loginForm.password')}</label>
             </div>
             {isError && <p className='login-error'>{i18n.t('loginForm.unauthorized')}</p>}
             <button className="login-submit" type="submit" disabled={isSubmitting}>

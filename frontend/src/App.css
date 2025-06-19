@@ -66,6 +66,13 @@
   color: white;
   background-color: black;
 }
+.login-input {
+  margin-left: 20px;
+}
+.login-container {
+  display: flex;
+  flex-direction: column;
+}
 .signup-button {
   margin-top: 30px;
   transition: all 1s ease;
