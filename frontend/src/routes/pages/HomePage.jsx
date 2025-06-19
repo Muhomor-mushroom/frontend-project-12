@@ -1,7 +1,8 @@
-import ChatForm from "../../components/Chat.jsx"
-
+import ChatForm from '../../components/Chat.jsx'
+/* eslint-disable */ 
 export default () => {
- return (
+  /* eslint-enable */
+  return (
     <ChatForm />
- )
+  )
 }

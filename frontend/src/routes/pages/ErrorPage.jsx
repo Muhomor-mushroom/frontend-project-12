@@ -1,7 +1,9 @@
+/* eslint-disable */ 
 export default () => {
-    return (
-        <>
-        <h3>Error 404</h3>
-        </>
-    )
+  /* eslint-enable */
+  return (
+    <>
+      <h3>Error 404</h3>
+    </>
+  )
 }

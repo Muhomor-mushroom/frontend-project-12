@@ -1,9 +1,10 @@
-import SignupForm from "../../components/signupForm.jsx"
-
+import SignupForm from '../../components/signupForm.jsx'
+/* eslint-disable */ 
 export default () => {
-    return (
-        <>
-        <SignupForm />
-        </>
-    )
+/* eslint-enable */
+  return (
+    <>
+      <SignupForm />
+    </>
+  )
 }

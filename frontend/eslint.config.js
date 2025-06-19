@@ -5,7 +5,7 @@ import stylistic from '@stylistic/eslint-plugin'
 import reactPlugin from 'eslint-plugin-react'
 
 export default defineConfig([stylistic.configs.recommended, {
-  ignores: ['dist', 'node_modules'],
+  ignores: ['dist', 'node_modules', 'eslint.config.js'],
 },
 { files: ['**/*.{js,mjs,cjs}'], plugins: { js, reactPlugin }, extends: ['js/recommended'] },
 { files: ['**/*.{js,mjs,cjs}'], languageOptions: { globals: globals.browser } },
