@@ -126,7 +126,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
               <button
                 onClick={() => deleteChannel(channel, setIsDeliting)}
                 disabled={isFetching}
-                className="btn-confirm"
+                className="btn-confirm btn-danger"
               >
                 {i18n.t("chatForm.yes")}
               </button>
@@ -161,8 +161,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
         return (
         <>
           {!isEditing ? (
-            <button className='channel-editing-form' onClick={() => makeEdit()} disabled={isFetching}>
-              {i18n.t("chatForm.rename")}
+            <button className='channel-editing-form' onClick={() => makeEdit()} disabled={isFetching}>{i18n.t("chatForm.rename")}
             </button>
           ) : (
             <button
