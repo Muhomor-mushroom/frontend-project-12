@@ -25,22 +25,13 @@ const store = configureStore({
 })
 
 const SignupForm = () => {
-  /* eslint-disable */ 
-  const [isError, setIsError] = useState(false)
-  /* eslint-enable */
   const [fetchError, setFetchError] = useState(null)
-  const [isUsernameError, setIsUserNameError] = useState(false)
   const [usernameError, setUsernameError] = useState(null)
-  const [passwordIsError, setPasswordIsError] = useState(false)
   const [passwordError, setPasswordError] = useState(null)
-  const [isConfirmError, setIsConfirmError] = useState(false)
   const [confirmError, setConfirmError] = useState(null)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
   const cleanValidateErrors = () => {
-    setIsUserNameError(false)
-    setPasswordIsError(false)
-    setIsConfirmError(false)
     setUsernameError(null)
     setPasswordError(null)
     setConfirmError(null)
@@ -63,7 +54,6 @@ const SignupForm = () => {
         username: name,
         password: password,
       })
-      setIsError(false)
       setFetchError(null)
       const { token } = resp.data
       localStorage.setItem('token', token)
@@ -78,31 +68,25 @@ const SignupForm = () => {
         console.log(error.errors)
         switch (false) {
           case error.errors.includes('name'): {
-            setIsUserNameError(false)
             setUsernameError(null)
           }
           /* eslint-disable */ 
           case error.errors.includes('password'): {
-            setPasswordIsError(false)
             setPasswordError(null)
           }
           /* eslint-enaable */ 
           case error.errors.includes('confirmPassword'): {
-            setIsConfirmError(false)
             setConfirmError(null)
             break
           }
           default:
-            console.log(error)
             break
         }
         error.errors.reverse().forEach((error) => {
-          console.log(error)
           switch (error) {
             case 'name must be at least 3 characters':
             case 'name must be at most 20 characters':
             case 'name is a required field': {
-              setIsUserNameError(true)
               if (error == 'name is a required field') {
                 setUsernameError(i18n.t('signupForm.requiredFieldError'))
               }
@@ -113,7 +97,6 @@ const SignupForm = () => {
             }
             case 'password must be at least 6 characters':
             case 'password is a required field': {
-              setPasswordIsError(true)
               if (error == 'password is a required field') {
                 setPasswordError(i18n.t('signupForm.requiredFieldError'))
               }
@@ -124,7 +107,6 @@ const SignupForm = () => {
             }
             case 'confirmPassword is a required field':
             case 'confirmPassword must match with password': {
-              setIsConfirmError(true)
               if (error == 'confirmPassword is a required field') {
                 setConfirmError(i18n.t('signupForm.requiredFieldError'))
               }
@@ -169,9 +151,9 @@ const SignupForm = () => {
                 id="name"
               />
               <label htmlFor="name">{i18n.t('signupForm.name')}</label>
-              {isUsernameError && (
+              {usernameError !== null ? (
                 <p className="signup-login-error">{usernameError}</p>
-              )}
+              ) : null}
             </div>
             <div className="form-group signup-group floating-label">
               <Field
@@ -182,9 +164,9 @@ const SignupForm = () => {
                 placeholder=""
               />
               <label htmlFor="password">{i18n.t('signupForm.password')}</label>
-              {passwordIsError && (
+              {passwordError !== null ? (
                 <p className="signup-login-error">{passwordError}</p>
-              )}
+              ) : null}
             </div>
             <div className="form-group signup-group floating-label">
               <Field
@@ -195,9 +177,9 @@ const SignupForm = () => {
                 placeholder=""
               />
               <label htmlFor="confirmPassword">{i18n.t('signupForm.confirmation')}</label>
-              {isConfirmError && (
+              {confirmError !== null ? (
                 <p className="signup-login-error">{confirmError}</p>
-              )}
+              ) : null}
             </div>
             <button
               className="signup-button"
