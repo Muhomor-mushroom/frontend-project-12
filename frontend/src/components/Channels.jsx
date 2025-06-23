@@ -1,4 +1,4 @@
-import Channel from './Channel.jsx'
+import Channel from './channel.jsx'
 import { useState } from 'react'
 import { Formik, Field, Form } from 'formik'
 import axios from 'axios'

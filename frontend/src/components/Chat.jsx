@@ -10,8 +10,8 @@ import {
   selectors as messagesSelectors,
 } from '../slices/messagesSlice.js'
 import { setUser } from '../slices/userSlice.js'
-import Channels from './Channels.jsx'
-import Messages from './Messages.jsx'
+import Channels from './channels.jsx'
+import Messages from './messages.jsx'
 import i18n from '../i18n.js'
 import { ToastContainer, toast } from 'react-toastify'
 
