@@ -11,20 +11,19 @@ import {
 import filter from 'leo-profanity'
 
 const errorReturn = (error) => {
-  if (error == 'The channel already exists') {
-    return i18n.t('chatForm.channelExistError')
-  }
-  if (error == 'name is a required field') {
-    return i18n.t('chatForm.requiredFieldError')
-  }
-  if (error == 'name must be at least 3 characters') {
-    return i18n.t('chatForm.ChannelNameError')
-  }
-  if (error == 'name must be at most 20 characters') {
-    return i18n.t('chatForm.ChannelNameError')
-  }
-  if (error == 'Obscene word') {
-    return i18n.t('chatForm.ObsceneError')
+  switch (error) {
+    case 'The channel already exists':
+      return i18n.t('chatForm.channelExistError')
+    case 'name is a required field':
+      return i18n.t('chatForm.requiredFieldError')
+    case 'name must be at least 3 characters':
+      return i18n.t('chatForm.ChannelNameError')
+    case 'name must be at most 20 characters':
+      return i18n.t('chatForm.ChannelNameError')
+    case 'Obscene word':
+      return i18n.t('chatForm.ObsceneError')
+    default:
+      break
   }
 }
 
