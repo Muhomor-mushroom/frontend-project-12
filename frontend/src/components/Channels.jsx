@@ -69,83 +69,93 @@ const Channels = ({ channels, setActiveChannel }) => {
     setActiveChannel(channel)
   }
 
+  const AddChannelForm = () => {
+    return (
+      <>
+        <Formik
+          initialValues={{ name: '' }}
+          onSubmit={(values, { setSubmitting }) => {
+            schema
+              .validate({ name: values.name })
+              .then((result) => {
+                /* censoreCheck(result); */
+                checkOnPlagiat(result)
+                const checkedResult = filter.clean(result.name)
+                if (checkedResult.includes('*')) {
+                  const newResult = { name: checkedResult }
+                  handleAdd(newResult, setActiveChannel)
+                  setIsAdding(false)
+                  setSubmitting(false)
+                }
+                else {
+                  handleAdd(values, setActiveChannel)
+                  setIsAdding(false)
+                  setSubmitting(false)
+                }
+              })
+              .catch(function (err) {
+                setIsError(true)
+                if (typeof err.message == 'string') {
+                  setTextError(err.message)
+                }
+                else {
+                  setTextError(err.errors[0])
+                }
+              })
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <div className="form-group add-form signup-group floating-label">
+                <Field
+                  type="name"
+                  name="name"
+                  id="name"
+                  className="form-control signup-field"
+                  placeholder=" "
+                />
+                <label htmlFor="name">{i18n.t('chatForm.name')}</label>
+              </div>
+              {isError && (
+                <p className="channel-name-error">{errorReturn(textError)}</p>
+              )}
+              <button
+                className="signup-button"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {i18n.t('chatForm.submit')}
+              </button>
+            </Form>
+          )}
+        </Formik>
+      </>
+    )
+  }
+  const ChannelsUl = ({ channels }) => {
+    return (
+      <ul>
+        {channels.map(channel => (
+          <Channel
+            handleClick={() => handleSelect(channel)}
+            key={channel.id}
+            channel={channel}
+            channels={channels}
+            setActiveChannel={setActiveChannel}
+          />
+        ))}
+      </ul>
+    )
+  }
   const CreateBody = () => {
     if (isAdding) {
       return (
-        <>
-          <Formik
-            initialValues={{ name: '' }}
-            onSubmit={(values, { setSubmitting }) => {
-              schema
-                .validate({ name: values.name })
-                .then((result) => {
-                  /* censoreCheck(result); */
-                  checkOnPlagiat(result)
-                  const checkedResult = filter.clean(result.name)
-                  if (checkedResult.includes('*')) {
-                    const newResult = { name: checkedResult }
-                    handleAdd(newResult, setActiveChannel)
-                    setIsAdding(false)
-                    setSubmitting(false)
-                  }
-                  else {
-                    handleAdd(values, setActiveChannel)
-                    setIsAdding(false)
-                    setSubmitting(false)
-                  }
-                })
-                .catch(function (err) {
-                  setIsError(true)
-                  if (typeof err.message == 'string') {
-                    setTextError(err.message)
-                  }
-                  else {
-                    setTextError(err.errors[0])
-                  }
-                })
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <div className="form-group add-form signup-group floating-label">
-                  <Field
-                    type="name"
-                    name="name"
-                    id="name"
-                    className="form-control signup-field"
-                    placeholder=" "
-                  />
-                  <label htmlFor="name">{i18n.t('chatForm.name')}</label>
-                </div>
-                {isError && (
-                  <p className="channel-name-error">{errorReturn(textError)}</p>
-                )}
-                <button
-                  className="signup-button"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  {i18n.t('chatForm.submit')}
-                </button>
-              </Form>
-            )}
-          </Formik>
-        </>
+        <AddChannelForm />
       )
     }
     else {
       return (
-        <ul>
-          {channels.map(channel => (
-            <Channel
-              handleClick={() => handleSelect(channel)}
-              key={channel.id}
-              channel={channel}
-              channels={channels}
-              setActiveChannel={setActiveChannel}
-            />
-          ))}
-        </ul>
+        <ChannelsUl channels={channels} />
       )
     }
   }
