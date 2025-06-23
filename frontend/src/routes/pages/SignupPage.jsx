@@ -4,7 +4,7 @@ export default () => {
 /* eslint-enable */
   return (
     <div>
-        <SignupForm />
+      <SignupForm />
     </div>
   )
 }
