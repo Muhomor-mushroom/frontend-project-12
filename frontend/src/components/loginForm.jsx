@@ -4,7 +4,7 @@ import { useState } from 'react'
 import i18n from '../i18n'
 import { ToastContainer, toast } from 'react-toastify'
 /* eslint-disable */ 
-export default () => {
+const LoginForm = () => {
   /* eslint-enable */
   const [isError, setIsError] = useState(false)
   const handleLogin = async (data) => {
@@ -66,3 +66,4 @@ export default () => {
     </div>
   )
 }
+export default LoginForm
