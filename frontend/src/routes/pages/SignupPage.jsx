@@ -3,8 +3,8 @@ import SignupForm from '../../components/SignupForm.jsx'
 export default () => {
 /* eslint-enable */
   return (
-    <>
+    <div>
       <SignupForm />
-    </>
+    </div>
   )
 }
