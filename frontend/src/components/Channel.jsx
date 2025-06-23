@@ -8,7 +8,7 @@ import {
   renaimedChannelToast,
 } from './Chat.jsx'
 import filter from 'leo-profanity'
-import { errorReturn } from './Channels.jsx'
+import { errorReturn } from './channels.jsx'
 
 let schema = yup.object().shape({
   name: yup.string().required().min(3).max(20),
