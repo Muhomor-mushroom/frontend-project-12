@@ -8,24 +8,7 @@ import {
   renaimedChannelToast,
 } from './Chat.jsx'
 import filter from 'leo-profanity'
-
-const errorReturn = (error) => {
-  if (error == 'The channel already exists') {
-    return i18n.t('chatForm.channelExistError')
-  }
-  if (error == 'name is a required field') {
-    return i18n.t('chatForm.requiredFieldError')
-  }
-  if (error == 'name must be at least 3 characters') {
-    return i18n.t('chatForm.ChannelNameError')
-  }
-  if (error == 'name must be at most 20 characters') {
-    return i18n.t('chatForm.ChannelNameError')
-  }
-  if (error == 'Obscene word') {
-    return i18n.t('chatForm.ObsceneError')
-  }
-}
+import { errorReturn } from './Channels.jsx'
 
 let schema = yup.object().shape({
   name: yup.string().required().min(3).max(20),
@@ -58,7 +41,7 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
       throw new Error('Obscene word')
     }
   }
-  const updateChannel = (channel, setIsChanging) => {
+  const updateChannel = (channel) => {
     const editedChannel = { name: text }
     try {
       checkChannelName(text, channel)
@@ -78,7 +61,6 @@ export default ({ channel, handleClick, channels, setActiveChannel }) => {
               setText('')
               setIsFetching(false)
               renaimedChannelToast()
-              setIsChanging(false)
             })
             .catch((error) => {
               createErrorToast(error.message)

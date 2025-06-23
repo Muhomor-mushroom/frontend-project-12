@@ -11,7 +11,7 @@ import {
 } from '../slices/messagesSlice.js'
 import { setUser } from '../slices/userSlice.js'
 import Channels from './Channels.jsx'
-import Messages from './messages.jsx'
+import Messages from './Messages.jsx'
 import i18n from '../i18n.js'
 import { ToastContainer, toast } from 'react-toastify'
 
@@ -23,7 +23,7 @@ const renaimedChannelToast = () => toast(i18n.t('chatForm.renaimedChannelToast')
 
 const errorToast = message => toast(`${i18n.t('chatForm.networkErrorToast')}${message}`)
 
-const ChatPage = () => {
+const ChatForm = () => {
   const token = localStorage.getItem('token')
   const [activeChannel, setActiveChannel] = useState({})
   const dispatch = useDispatch()
@@ -79,6 +79,6 @@ const ChatPage = () => {
   )
 }
 /* eslint-disable */ 
-export default () => <ChatPage />
+export default () => <ChatForm />
 export { createdChannelToast, deletedChannelToast, renaimedChannelToast, errorToast }
 /* eslint-enable */

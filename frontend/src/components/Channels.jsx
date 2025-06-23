@@ -168,3 +168,4 @@ const Channels = ({ channels, setActiveChannel }) => {
   )
 }
 export default Channels
+export { errorReturn }

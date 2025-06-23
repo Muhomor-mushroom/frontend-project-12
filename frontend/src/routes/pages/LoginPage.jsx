@@ -1,4 +1,4 @@
-import LoginForm from '../../components/loginForm.jsx'
+import LoginForm from '../../components/LoginForm.jsx'
 /* eslint-disable */ 
 export default () => {
   /* eslint-enable */
